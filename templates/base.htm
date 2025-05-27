@@ -17,40 +17,149 @@
             crossorigin="anonymous"
         />
         <style>
-            *{
-                color: #1b423a !important;
-            }
-            body{
-                background-color: #1b423a ;
-               
-            }
-            .text-gradient {
-                font-weight: 700;
-                background-image: linear-gradient(45deg, #C99A0A 0%, #E6E8D3 100%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                color: transparent;
-                -webkit-text-fill-color: transparent;
-                text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
-            }
 
-            /* Floating animation */
-            @keyframes float {
-                0% {
-                    transform: translateY(0px);
-                }
-                50% {
-                    transform: translateY(-30px);
-                }
-                100% {
-                    transform: translateY(0px);
-                }
+        body {
+            background-color: #1b423a;
+            color: white;
+        }
+        
+        .text-gradient {
+            font-weight: 700;
+            background-image: linear-gradient(45deg, #C99A0A 0%, #E6E8D3 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+        }
+        
+        .gold-text {
+            color: #c99a0a;
+        }
+        
+        .cream-text {
+            color: #e6e8d3;
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .float-effect {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .float-delay-1 {
+            animation: float 3s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+        
+        .float-delay-2 {
+            animation: float 3s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+        
+        .feature-card {
+            background: rgba(230, 232, 211, 0.1);
+            border: 2px solid #c99a0a;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(201, 154, 10, 0.2);
+            border-color: #e6e8d3;
+        }
+        
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: #1b423a;
+        }
+        
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+            border-radius: 2px;
+            margin: 4rem auto;
+            width: 100px;
+        }
+        
+        .hero-section {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(201, 154, 10, 0.1) 0%, rgba(230, 232, 211, 0.05) 100%);
+            border-radius: 30px;
+            margin: 2rem 0;
+            padding: 3rem;
+        }
+        
+        .stats-box {
+            background: rgba(201, 154, 10, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #c99a0a;
+        }
+        
+        .process-step {
+            position: relative;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .process-step::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+            border-radius: 2px;
+        }
+        
+        .emoji-large {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 1rem;
+                margin: 1rem 0;
             }
-
-            .float-effect {
-                animation: float 2s ease-in-out infinite;
+            
+            .feature-card {
+                padding: 1.5rem;
             }
-
+            
+            .display-1 {
+                font-size: 2.5rem;
+            }
+        }
         </style>
     </head>
 
