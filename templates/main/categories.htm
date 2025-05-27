@@ -1,0 +1,102 @@
+{% extends 'base.htm' %}
+{% block title %}
+Categories | SL Micro Greens
+{% endblock title %}
+
+
+{% block content %}
+{% include "utils/navbar.htm" %}
+<div class="container" style="margin-top: 170px;">
+    <div class="hero-section">
+        <div class="row w-100 align-items-center">
+            <div class="col-12 text-center">
+                <h1 class="display-1 fw-bold text-gradient float-effect mb-4">
+                    Tiny Greens, Massive Nutrition 🌱
+                </h1>
+                <h2 class="h3 text-gradient float-delay-1 mb-4">
+                    Harvested Young, Packed with Power - Naturally
+                </h2>
+                <p class="lead cream-text float-delay-2">Fresh. Clean. Nutrient-Rich.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Categories Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-gradient float-effect">Our Microgreen Categories</h2>
+        <div class="section-divider"></div>
+    </div>
+    
+    {% if categories_data %}
+    <div class="row justify-content-center">
+        {% for category in categories_data %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="category-card float-effect">
+                {% if category.image %}
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="category-image">
+                {% else %}
+                <div class="category-image d-flex align-items-center justify-content-center" style="background: linear-gradient(45deg, rgba(201, 154, 10, 0.3), rgba(230, 232, 211, 0.2));">
+                    <span style="font-size: 4rem;">🌱</span>
+                </div>
+                {% endif %}
+                
+                <div class="category-content">
+                    <h3 class="category-title text-gradient">{{ category.name }}</h3>
+                    <p class="category-description">{{ category.description|truncatewords:20 }}</p>
+                    
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-outline-warning btn-sm px-4" style="border-color: #c99a0a; color: #c99a0a;">
+                            Explore Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% else %}
+    <!-- No Categories Message -->
+    <div class="row">
+        <div class="col-12">
+            <div class="no-categories float-effect">
+                <span style="font-size: 4rem; margin-bottom: 2rem; display: block;">🌱</span>
+                <h3 class="text-gradient mb-3">Categories Coming Soon!</h3>
+                <p class="cream-text fs-5">
+                    We're preparing our amazing microgreen categories for you. 
+                    Check back soon to explore our fresh, nutrient-packed selections.
+                </p>
+                <div class="mt-4">
+                    <a href="/" class="btn btn-warning px-4" style="background-color: #c99a0a; border-color: #c99a0a;">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="container py-5">
+    <div class="text-center">
+        <div class="category-card float-delay-2">
+            <div class="category-content">
+                <h3 class="text-gradient mb-4">Ready to Transform Your Health?</h3>
+                <p class="cream-text fs-5 mb-4">
+                    Discover the power of microgreens and join the clean eating revolution.
+                </p>
+                <div>
+                    <a href="/contact" class="btn btn-warning me-3 px-4" style="background-color: #c99a0a; border-color: #c99a0a;">
+                        Contact Us
+                    </a>
+                    <a href="/products" class="btn btn-outline-warning px-4" style="border-color: #c99a0a; color: #c99a0a;">
+                        Whole Sale
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "utils/footer.htm" %}
+{% endblock content %}

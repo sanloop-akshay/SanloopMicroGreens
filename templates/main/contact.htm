@@ -1,0 +1,413 @@
+{% extends 'base.htm' %}
+{% block title %}
+Contact Us | SL Micro Greens
+{% endblock title %}
+
+{% block content %}
+{% include "utils/navbar.htm" %}
+<div class="container" style="margin-top: 170px;">
+    <div class="hero-section">
+        <div class="row w-100 align-items-center">
+            <div class="col-12 text-center">
+                <h1 class="display-1 fw-bold text-gradient float-effect mb-4">
+                    📞 Get In Touch
+                </h1>
+                <h2 class="h3 text-gradient float-delay-1 mb-4">
+                    Ready to start your journey with fresh, clean microgreens?                </h2>
+                <p class="lead cream-text float-delay-2">We'd love to hear from you! Whether you're a restaurant owner, health enthusiast, or wholesale buyer.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Information Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-gradient float-effect">📍 Contact Information</h2>
+        <div class="section-divider"></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card text-center float-effect">
+                <div class="icon-box">
+                    📞
+                </div>
+                <h5 class="text-gradient mb-3">Call Us</h5>
+                <p class="cream-text fs-5 mb-2">
+                    <a href="tel:+919876543210" class="cream-text text-decoration-none hover-gold">
+                        +91 98765 43210
+                    </a>
+                </p>
+                <p class="cream-text fs-5">
+                    <a href="tel:+919123456789" class="cream-text text-decoration-none hover-gold">
+                        +91 91234 56789
+                    </a>
+                </p>
+                <p class="small">Mon - Sat: 8:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card text-center float-delay-1">
+                <div class="icon-box">
+                    ✉️
+                </div>
+                <h5 class="text-gradient mb-3">Email Us</h5>
+                <p class="cream-text fs-5 mb-2">
+                    <a href="mailto:info@sanloop.com" class="cream-text text-decoration-none hover-gold">
+                        info@sanloop.com
+                    </a>
+                </p>
+                <p class="cream-text fs-5">
+                    <a href="mailto:orders@sanloop.com" class="cream-text text-decoration-none hover-gold">
+                        orders@sanloop.com
+                    </a>
+                </p>
+                <p class="small">We respond within 24 hours</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card text-center float-delay-2">
+                <div class="icon-box">
+                    💬
+                </div>
+                <h5 class="text-gradient mb-3">WhatsApp</h5>
+                <p class="cream-text fs-5 mb-3">
+                    <a href="https://wa.me/919876543210?text=Hi%20Sanloop!%20I%27m%20interested%20in%20your%20microgreens" 
+                       target="_blank" 
+                       class="cream-text text-decoration-none hover-gold">
+                        +91 98765 43210
+                    </a><br>
+                    Kindly Follow the Automation 
+
+                </p>
+                <a href="https://wa.me/919876543210?text=Hi%20Sanloop!%20I%27m%20interested%20in%20your%20microgreens" 
+                   target="_blank" 
+                   class="btn btn-outline-warning btn-lg">
+                    <i class="fab fa-whatsapp me-2"></i>Chat Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Form Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-gradient float-effect">📝 Send Us A Message</h2>
+        <p class="lead cream-text">Fill out the form below and we'll get back to you soon</p>
+        <div class="section-divider"></div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="feature-card">
+                <form id="contactForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="firstName" class="form-label cream-text">First Name *</label>
+                            <input type="text" class="form-control" id="firstName" name="first_name" required
+                                   style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="lastName" class="form-label cream-text">Last Name *</label>
+                            <input type="text" class="form-control" id="lastName" name="last_name" required
+                                   style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="email" class="form-label cream-text">Email Address *</label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                   style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="phone" class="form-label cream-text">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone"
+                                   style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="inquiryType" class="form-label cream-text">Inquiry Type *</label>
+                        <select class="form-select" id="inquiryType" name="inquiry_type" required
+                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;">
+                            <option value="">Select an option...</option>
+                            <option value="wholesale">Wholesale Orders</option>
+                            <option value="retail">Retail Purchase</option>
+                            <option value="restaurant">Restaurant/Café Partnership</option>
+                            <option value="juice_bar">Juice Bar/Wellness Center</option>
+                            <option value="corporate">Corporate Wellness</option>
+                            <option value="home_delivery">Home Delivery</option>
+                            <option value="farm_visit">Farm Visit</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="subject" class="form-label cream-text">Subject *</label>
+                        <input type="text" class="form-control" id="subject" name="subject" required
+                               style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="message" class="form-label cream-text">Message *</label>
+                        <textarea class="form-control" id="message" name="message" rows="6" required
+                                  style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3;"
+                                  placeholder="Tell us about your requirements, preferred quantities, delivery schedule, or any specific questions..."></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter"
+                                   style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a;">
+                            <label class="form-check-label cream-text" for="newsletter">
+                                Subscribe to our newsletter for updates on new products and farming tips
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-lg px-5 py-3" 
+                                style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); color: #1b423a; border: none; font-weight: bold;">
+                            <i class="fas fa-paper-plane me-2"></i>Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Contact Options -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-gradient float-effect">🚀 Quick Actions</h2>
+        <div class="section-divider"></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center float-effect">
+                <div class="icon-box">
+                    📦
+                </div>
+                <h5 class="text-gradient mb-3">Place Order</h5>
+                <p class="small mb-3">Ready to order? Get fresh microgreens delivered</p>
+                <a href="https://wa.me/919876543210?text=Hi!%20I%27d%20like%20to%20place%20an%20order%20for%20microgreens" 
+                   target="_blank" 
+                   class="btn btn-outline-warning">
+                    Order Now
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center float-delay-1">
+                <div class="icon-box">
+                    🏬
+                </div>
+                <h5 class="text-gradient mb-3">Wholesale Inquiry</h5>
+                <p class="small mb-3">Bulk orders for restaurants & stores</p>
+                <a href="https://wa.me/919876543210?text=Hi!%20I%27m%20interested%20in%20wholesale%20pricing%20for%20microgreens" 
+                   target="_blank" 
+                   class="btn btn-outline-warning">
+                    Get Quote
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center float-delay-2">
+                <div class="icon-box">
+                    🚜
+                </div>
+                <h5 class="text-gradient mb-3">Farm Visit</h5>
+                <p class="small mb-3">Schedule a tour of our facilities</p>
+                <a href="https://wa.me/919876543210?text=Hi!%20I%27d%20like%20to%20schedule%20a%20farm%20visit" 
+                   target="_blank" 
+                   class="btn btn-outline-warning">
+                    Book Visit
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center float-effect">
+                <div class="icon-box">
+                    📋
+                </div>
+                <h5 class="text-gradient mb-3">Product Catalog</h5>
+                <p class="small mb-3">Download our complete price list</p>
+                <a href="https://wa.me/919876543210?text=Hi!%20Can%20you%20send%20me%20your%20product%20catalog%20and%20price%20list?" 
+                   target="_blank" 
+                   class="btn btn-outline-warning">
+                    Get Catalog
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-gradient float-effect">📍 Visit Our Farm</h2>
+        <p class="lead cream-text">Come see where the magic happens</p>
+        <div class="section-divider"></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="feature-card">
+                <h4 class="text-gradient mb-4">
+                    <i class="fas fa-map-marker-alt me-2"></i>Farm Address
+                </h4>
+                <p class="cream-text fs-5 mb-3">
+                    <strong>Sanloop Micro Greens Farm</strong><br>
+                    Near Prozone Mall,<br>
+                    Coimbatore, Tamil Nadu 641035<br>
+                    India
+                </p>
+                
+                <div class="mt-4">
+                    <h5 class="gold-text mb-3">Farm Visiting Hours:</h5>
+                    <p class="cream-text">
+                        <strong>Monday - Saturday:</strong> 8:00 AM - 5:00 PM<br>
+                        <strong>Sunday:</strong> 9:00 AM - 2:00 PM<br>
+                        <small class="text-warning">*Prior appointment recommended</small>
+                    </p>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="https://wa.me/919876543210?text=Hi!%20I%27d%20like%20to%20schedule%20a%20farm%20visit" 
+                       target="_blank" 
+                       class="btn btn-warning me-3">
+                        <i class="fab fa-whatsapp me-2"></i>Schedule Visit
+                    </a>
+                    <a href="https://maps.google.com/?q=PROZONE+MALL+Coimbatore" 
+                       target="_blank" 
+                       class="btn btn-outline-warning">
+                        <i class="fas fa-directions me-2"></i>Get Directions
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="feature-card p-0" >
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62659.29816963224!2d76.97858559999999!3d11.023155200000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859394e6d6057%3A0x1d00aac6c7f87b0c!2sPROZONE%20MALL!5e0!3m2!1sen!2sin!4v1748370877580!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="430" 
+                        style="border:0; border-radius: 18px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 text-gradient float-effect">❓ Frequently Asked Questions</h2>
+        <div class="section-divider"></div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item mb-3" style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; border-radius: 15px;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1"
+                                style="background: transparent; color: #e6e8d3; border: none;">
+                            <strong>What is the minimum order quantity?</strong>
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body cream-text">
+                            For retail customers, there's no minimum order. For wholesale/restaurant orders, minimum is 1kg per variety. We offer flexible packaging from 100g to 5kg.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-3" style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; border-radius: 15px;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2"
+                                style="background: transparent; color: #e6e8d3; border: none;">
+                            <strong>How fresh are your microgreens?</strong>
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body cream-text">
+                            Our microgreens are harvested the same day or day before delivery. We follow a 12-15 day growing cycle and deliver within 24-48 hours of harvest for maximum freshness.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-3" style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; border-radius: 15px;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3"
+                                style="background: transparent; color: #e6e8d3; border: none;">
+                            <strong>Do you deliver outside Coimbatore?</strong>
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body cream-text">
+                            Yes! We deliver across Tamil Nadu and neighboring states. Delivery charges vary by location. For bulk orders, we provide special shipping rates.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-3" style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; border-radius: 15px;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4"
+                                style="background: transparent; color: #e6e8d3; border: none;">
+                            <strong>Are your microgreens organic certified?</strong>
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body cream-text">
+                            While we follow 100% organic practices (no pesticides, chemicals, or GMOs), we're currently in the process of getting official organic certification. All our growing methods are completely natural.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container py-5">
+    <div class="text-center">
+        <div class="feature-card">
+            <h3 class="text-gradient float-effect mb-4">
+                🌱 Ready to Experience Fresh?
+            </h3>
+            <p class="lead cream-text mb-4">
+                Join hundreds of satisfied customers who trust Sanloop for their daily nutrition needs.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="https://wa.me/919876543210?text=Hi%20Sanloop!%20I%27m%20ready%20to%20place%20my%20first%20order" 
+                   target="_blank" 
+                   class="btn btn-warning btn-lg">
+                    <i class="fab fa-whatsapp me-2"></i>Start Your Order
+                </a>
+                <a href="tel:+919876543210" class="btn btn-outline-warning btn-lg">
+                    <i class="fas fa-phone me-2"></i>Call Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "utils/footer.htm" %}
+
+
+{% endblock content %}
