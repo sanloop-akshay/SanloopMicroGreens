@@ -9,8 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home,name="home"),
     path('categories',views.categories,name="categories"),
-    path('categories/<str:productCategory>',views.productCategory,name="productCategories"),
-    path('categories/<str:productCategory>/<str:product>',views.product,name="product"),
+    path('categories/<int:productCategory>',views.productCategory,name="productCategories"),
+    path('categories/<int:productCategory>/<int:product>',views.product,name="product"),
     path('contactus',views.contactus,name="contactus")
     
 ]

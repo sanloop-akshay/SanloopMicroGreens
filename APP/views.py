@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .models import Category
+from django.shortcuts import render,redirect
+from .models import Category,Product
 # Create your views here.
 
 def home(request):
@@ -11,7 +11,11 @@ def categories(request):
 
 
 def productCategory(request,productCategory):
-    return render(request,"main/products.htm")
+    if Product.objects.filter(category=productCategory):
+        productCategoryData = Product.objects.filter(category=productCategory)
+        return render(request,"main/products.htm",{'productCategoryData':productCategoryData})
+    else:
+        return redirect("categories")
 
 
 def product(request,productCategory,product):
