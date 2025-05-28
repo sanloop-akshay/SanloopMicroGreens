@@ -152,8 +152,8 @@ Products | SL Micro Greens
                         <h5 class="modal-title text-gradient" id="productModalLabel{{ forloop.counter }}">
                             {{ product.name }}
                             {% if product.popular %}
-                            <span class="popular-badge-modal">
-                                <i class="fas fa-star me-1"></i>Popular Choice
+                            <span class="popular-badge-modal" style="color: black !important;">
+                                <i class="fas fa-star me-1 "></i>Popular Choice
                             </span>
                             {% endif %}
                         </h5>
@@ -184,7 +184,7 @@ Products | SL Micro Greens
                                 <div class="product-info">
                                     {% if product.description %}
                                     <h6 class="text-gradient">Description:</h6>
-                                    <p class="cream-text mb-3">{{ product.description }}</p>
+                                    <p class="text-dark mb-3">{{ product.description }}</p>
                                     {% endif %}
                                     
 
@@ -195,7 +195,7 @@ Products | SL Micro Greens
                                         <h6 class="text-gradient">
                                             <i class="fas fa-star me-2"></i>Customer Favorite
                                         </h6>
-                                        <p class="cream-text">This is one of our most loved products by customers for its exceptional taste and nutritional value!</p>
+                                        <p class="text-dark">This is one of our most loved products by customers for its exceptional taste and nutritional value!</p>
                                     </div>
                                     {% endif %}
                                 </div>

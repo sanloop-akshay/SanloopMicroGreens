@@ -18,9 +18,6 @@ def productCategory(request,productCategory):
         return redirect("categories")
 
 
-def product(request,productCategory,product):
-    return render(request,"main/product.htm")
-
 
 def contactus(request):
     return render(request,"main/contact.htm")
