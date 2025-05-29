@@ -97,7 +97,7 @@ Whether you're a **chef**, **retailer**, **health coach**, or someone who just w
 
 ### 🌐 Connect with Us
 **Website:** *(Coming Soon)*  
-**Email:** contact@sanloopgreens.com (mailto:contact@sanloopgreens.com)  
+**Email:** contact@sanloopgreens.com
 **Location:** Virudhunagar, Tamil Nadu, India  
 **Instagram / Facebook / LinkedIn:** @SanloopGreens
 
