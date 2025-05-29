@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 import random
 
 # Create your views here.
@@ -208,3 +209,21 @@ def reset_password(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+
+@login_required
+def profile(request):
+    profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        profile.fullname = request.POST.get('fullname')
+        profile.street = request.POST.get('street')
+        profile.city = request.POST.get('city')
+        profile.district = request.POST.get('district')
+        profile.state = request.POST.get('state')
+        profile.pincode = request.POST.get('pincode')
+        profile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect('profile')  # reload page after update
+
+    return render(request, "main/profile.htm", {'profile': profile})

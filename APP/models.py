@@ -51,3 +51,56 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+    
+class Favorite(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='favorites')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='favorited_by')
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product') 
+
+    def __str__(self):
+        return f"{self.user.user.username} - {self.product.name}"
+    
+    
+class CartItem(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='cart_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product')
+
+    def __str__(self):
+        return f"{self.user.user.username} - {self.product.name} x{self.quantity}"
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('placed', 'Order Placed'),
+        ('processing', 'Processing'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+        ('cancelled', 'Cancelled'),
+    ]
+
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='orders')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_paid = models.BooleanField(default=False)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='placed')
+
+    def __str__(self):
+        return f"Order #{self.id} by {self.user.user.username} "
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2) 
+
+    def __str__(self):
+        return f"{self.product.name} x{self.quantity} in Order #{self.order.id}"

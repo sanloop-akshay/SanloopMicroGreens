@@ -1,0 +1,133 @@
+{% extends 'base.htm' %}
+{% block title %}
+Your Profile | SL Micro Greens
+{% endblock title %}
+
+{% block content %}
+{% include "utils/navbar.htm" %}
+
+<div class="container" style="margin-top: 120px; margin-bottom: 60px;">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="text-center mb-5">
+                <h1 class="display-4 text-gradient float-effect mb-4">🌿 Your Profile</h1>
+                <p class="lead cream-text fs-5">Update your information and keep things fresh 🌱</p>
+            </div>
+
+            <div class="feature-card" style="padding: 3rem 2.5rem;">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success text-center">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Full Name -->
+                    <div class="mb-4">
+                        <label for="fullname" class="form-label gold-text fw-bold fs-6 mb-2">
+                            <i class="fas fa-user me-2"></i>Full Name
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="fullname" name="fullname"
+                            value="{{ profile.fullname }}" required
+                            placeholder="Enter your full name"
+                            style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                        <div class="invalid-feedback">Please enter your full name.</div>
+                    </div>
+
+                    <!-- Street -->
+                    <div class="mb-4">
+                        <label for="street" class="form-label gold-text fw-bold fs-6 mb-2">Street</label>
+                        <input type="text" class="form-control form-control-lg" id="street" name="street"
+                            value="{{ profile.street }}" required
+                            placeholder="Street address"
+                            style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                        <div class="invalid-feedback">Please enter your street address.</div>
+                    </div>
+
+                    <!-- City + District -->
+                    <div class="mb-4 row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="city" class="form-label gold-text fw-bold fs-6 mb-2">City</label>
+                            <input type="text" class="form-control form-control-lg" id="city" name="city"
+                                value="{{ profile.city }}" required
+                                placeholder="City"
+                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                            <div class="invalid-feedback">City is required.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="district" class="form-label gold-text fw-bold fs-6 mb-2">District</label>
+                            <input type="text" class="form-control form-control-lg" id="district" name="district"
+                                value="{{ profile.district }}" required
+                                placeholder="District"
+                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                            <div class="invalid-feedback">District is required.</div>
+                        </div>
+                    </div>
+
+                    <!-- State + Pincode -->
+                    <div class="mb-4 row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="state" class="form-label gold-text fw-bold fs-6 mb-2">State</label>
+                            <input type="text" class="form-control form-control-lg" id="state" name="state"
+                                value="{{ profile.state }}" required
+                                placeholder="State"
+                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                            <div class="invalid-feedback">State is required.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="pincode" class="form-label gold-text fw-bold fs-6 mb-2">Pincode</label>
+                            <input type="text" class="form-control form-control-lg" id="pincode" name="pincode"
+                                value="{{ profile.pincode }}" required pattern="\d{6}"
+                                placeholder="Pincode"
+                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                            <div class="invalid-feedback">Enter a valid 6-digit pincode.</div>
+                        </div>
+                    </div>
+
+                    <!-- Email (readonly) -->
+                    <div class="mb-4">
+                        <label for="email" class="form-label gold-text fw-bold fs-6 mb-2">Email</label>
+                        <input type="email" class="form-control form-control-lg" id="email" name="email"
+                            value="{{ request.user.email }}" readonly
+                            style="background: rgba(230, 232, 211, 0.1); border: 2px solid #aaa; color: #aaa; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;">
+                    </div>
+
+                    <!-- Update Button -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-lg text-white fw-bold fs-5"
+                            style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); border: none; border-radius: 15px; padding: 1.25rem;"
+                            onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(201, 154, 10, 0.4)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(201, 154, 10, 0.2)'">
+                            <i class="fas fa-save me-2"></i>Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "utils/footer.htm" %}
+
+<script>
+    // Validation script
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.forEach.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+{% endblock content %}

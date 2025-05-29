@@ -20,6 +20,7 @@ urlpatterns = [
     path('reset-password-otp', views.reset_password_otp, name='reset_password_otp'),
     path('reset-password/', views.reset_password, name='reset_password'),
     path('logout/', views.user_logout, name='logout'),
+    path('profile',views.profile,name="profile")
 
 ]
 if settings.DEBUG:
