@@ -21,3 +21,25 @@ def productCategory(request,productCategory):
 
 def contactus(request):
     return render(request,"main/contact.htm")
+
+
+def login(request):
+    return render(request,"auth/signin.htm")
+
+
+def forgetpassword(request):
+    return render(request,"auth/forgetpassword.htm")
+
+
+def signup(request):
+    return render(request,"auth/signup.htm")
+
+def otp(request):
+    return render(request,"auth/otp.htm")
+
+
+def favorite(request):
+    return render(request,"main/favorite.htm")
+
+def cart(request):
+    return render(request,"main/cart.htm")

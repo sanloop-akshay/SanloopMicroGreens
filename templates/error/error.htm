@@ -1,0 +1,27 @@
+{% extends 'base.htm' %}
+{% block title %}
+{{ error_code }} Error | SL Micro Greens
+{% endblock title %}
+
+{% block content %}
+{% include "utils/navbar.htm" %}
+
+<div class="container text-center" style="margin-top: 120px; margin-bottom: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="display-1 fw-bold text-gradient mb-4">{{ error_code }}</h1>
+            <h2 class="cream-text mb-3">{{ error_title }}</h2>
+            <p class="cream-text fs-5 mb-5">{{ error_message }}</p>
+            <a href="{% url 'home' %}" class="btn btn-lg text-white fw-bold fs-5"
+               style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); border: none; border-radius: 15px; padding: 1.25rem; transition: all 0.3s ease;"
+               onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(201, 154, 10, 0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(201, 154, 10, 0.2)'"
+            >
+                <i class="fas fa-home me-2"></i>Go Home
+            </a>
+        </div>
+    </div>
+</div>
+
+{% include "utils/footer.htm" %}
+{% endblock content %}
