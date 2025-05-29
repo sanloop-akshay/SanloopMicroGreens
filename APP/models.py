@@ -3,6 +3,7 @@ import time
 from django.db import models
 from django.contrib.auth.models import User
 
+
 def get_timestamped_filename(filename, folder):
     ext = filename.split('.')[-1]
     new_filename = f"{int(time.time())}.{ext}"
