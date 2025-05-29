@@ -40,6 +40,7 @@
           
         <form method="post" action="{% url 'logout' %}">
           {% csrf_token %}
+          
           <button type="submit" class="nav-link btn btn-link p-0 m-0 align-baseline" style="color: #1b423a;">
             <i class="fa fa-sign-out-alt"></i> Logout
           </button>
