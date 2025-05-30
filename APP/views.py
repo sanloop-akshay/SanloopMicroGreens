@@ -227,3 +227,7 @@ def profile(request):
         return redirect('profile')  # reload page after update
 
     return render(request, "main/profile.htm", {'profile': profile})
+
+
+def error(request):
+    return render(request,"error/error.htm")
