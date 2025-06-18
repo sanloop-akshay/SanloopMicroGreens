@@ -10,6 +10,7 @@ urlpatterns = [
     path('',views.home,name="home"),
     path('categories',views.categories,name="categories"),
     path('categories/<int:productCategory>',views.productCategory,name="productCategories"),
+    path('products/<int:id>',views.specificproduct,name="specificproduct"),
     path('contactus',views.contactus,name="contactus"),
     path('login',views.user_login,name="login"),
     path('sign-up',views.signup,name="signup"),
@@ -22,6 +23,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('profile',views.profile,name="profile"),
     path('error',views.error,name="error"),
+    
 
 ]
 if settings.DEBUG:

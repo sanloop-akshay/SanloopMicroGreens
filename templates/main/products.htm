@@ -59,15 +59,26 @@ Products | SL Micro Greens
     <div class="row justify-content-center">
         {% for product in productCategoryData %}
         <div class="col-lg-4 col-md-6 mb-4">
+
             <div class="product-card float-effect">
+
                 <div class="product-image-container">
                     {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    <a href="/products/{{product.id}}" class="">
+
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    
+                    </a>
+
                     {% else %}
-                    <div class="product-placeholder">
-                        <span class="emoji-large">🌿</span>
-                        <p class="cream-text">{{ product.name }}</p>
-                    </div>
+                    <a href="/products/{{product.id}}" class="">
+
+                        <div class="product-placeholder">
+                            <span class="emoji-large">🌿</span>
+                            <p class="cream-text">{{ product.name }}</p>
+                        </div>
+                    </a>
+                    
                     {% endif %}
                     
                     <!-- Popular Badge -->
@@ -122,11 +133,10 @@ Products | SL Micro Greens
                     </div>
                     
                     <!-- Action Buttons -->
+
                     <div class="product-actions">
                         {% if product.in_stock %}
-                        <!-- <button class="btn btn-primary-custom btn-add-cart">
-                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                        </button> -->
+
                         <button class="btn btn-secondary-custom btn-quick-view" data-bs-toggle="modal" data-bs-target="#productModal{{ forloop.counter }}">
                             <i class="fas fa-eye me-2"></i>Quick View
                         </button>
@@ -134,8 +144,8 @@ Products | SL Micro Greens
                         <button class="btn btn-disabled" disabled>
                             <i class="fas fa-ban me-2"></i>Out of Stock
                         </button>
-                        <button class="btn btn-notify">
-                            <i class="fas fa-bell me-2"></i>Notify Me
+                        <button class="btn btn-secondary-custom btn-quick-view" data-bs-toggle="modal" data-bs-target="#productModal{{ forloop.counter }}">
+                            <i class="fas fa-eye me-2"></i>Quick View
                         </button>
                         {% endif %}
                     </div>
@@ -196,38 +206,7 @@ Products | SL Micro Greens
                                     {% endif %}
                                 </div>
                                 
-                                {% if product.in_stock %}
-                                <!-- Quantity and Price Row -->
-                                <div class="quantity-price-row mb-3">
-                                    <div class="quantity-section">
-                                        <h6 class="text-gradient mb-2">Quantity:</h6>
-                                        <div class="quantity-control">
-                                            <button type="button" class="quantity-btn minus-btn" onclick="decreaseQuantity('{{ forloop.counter }}')">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <input type="number" id="quantity{{ forloop.counter }}" class="quantity-input" value="1" min="1" max="100" readonly>
-                                            <button type="button" class="quantity-btn plus-btn" onclick="increaseQuantity('{{ forloop.counter }}')">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="total-price-section">
-                                        <h6 class="text-gradient mb-2">Total Price:</h6>
-                                        <span class="total-price gold-text fw-bold fs-4" id="totalPrice{{ forloop.counter }}" data-unit-price="{{ product.new_price }}">
-                                            ₹{{ product.new_price }}
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-primary-custom w-100 mt-3" onclick="addToCart('{{ product.name }}', '{{ forloop.counter }}')">
-                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                                </button>
-                                {% else %}
-                                <button class="btn btn-notify w-100 mt-3">
-                                    <i class="fas fa-bell me-2"></i>Notify When Available
-                                </button>
-                                {% endif %}
+
                             </div>
                         </div>
                     </div>
@@ -382,16 +361,6 @@ Products | SL Micro Greens
 .new-price {
     font-size: 1.5rem;
     font-weight: bold;
-}
-
-.discount-badge {
-    background: linear-gradient(45deg, #c99a0a, #e6e8d3);
-    color: #1b423a;
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-left: auto;
 }
 
 .product-features {
@@ -564,87 +533,6 @@ Products | SL Micro Greens
     padding: 1rem;
 }
 
-.quantity-price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.quantity-section {
-    flex: 1;
-}
-
-.quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    width: fit-content;
-    border: 2px solid #c99a0a;
-    border-radius: 25px;
-    overflow: hidden;
-    background: rgba(201, 154, 10, 0.1);
-    height: 48px;
-}
-
-.quantity-btn {
-    background: transparent;
-    border: none;
-    color: #c99a0a;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.quantity-btn:hover {
-    background: #c99a0a;
-    color: #1b423a;
-}
-
-.quantity-btn:active {
-    transform: scale(0.95);
-}
-
-.quantity-input {
-    background: rgba(230, 232, 211, 0.8);
-    border: none;
-    color: #1b423a;
-    text-align: center;
-    width: 60px;
-    height: 48px;
-    padding: 0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    outline: none;
-    border-left: 2px solid #c99a0a;
-    border-right: 2px solid #c99a0a;
-    margin: 0;
-}
-
-.quantity-input:focus {
-    background: #e6e8d3;
-    box-shadow: inset 0 0 5px rgba(201, 154, 10, 0.3);
-}
-
-.total-price-section {
-    flex: 1;
-    text-align: right;
-}
-
-.total-price {
-    display: block;
-    margin-top: 0.5rem;
-    font-size: 1.8rem !important;
-}
-
 .no-products {
     background: rgba(230, 232, 211, 0.1);
     border: 2px solid #c99a0a;
@@ -680,11 +568,6 @@ Products | SL Micro Greens
         align-items: flex-start;
     }
     
-    .discount-badge {
-        margin-left: 0;
-        margin-top: 0.5rem;
-    }
-    
     .popular-badge {
         font-size: 0.7rem;
         padding: 0.4rem 0.8rem;
@@ -692,24 +575,6 @@ Products | SL Micro Greens
     
     .stock-badge.with-popular {
         top: 3.5rem;
-    }
-    
-    .quantity-price-row {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .total-price-section {
-        text-align: left;
-    }
-    
-    .quantity-control {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .quantity-input {
-        width: 80px;
     }
 }
 
@@ -721,70 +586,6 @@ Products | SL Micro Greens
     animation-delay: 0.4s;
 }
 </style>
-
-<script>
-function increaseQuantity(productId) {
-    const quantityInput = document.getElementById('quantity' + productId);
-    const currentValue = parseInt(quantityInput.value);
-    const maxValue = parseInt(quantityInput.getAttribute('max'));
-    
-    if (currentValue < maxValue) {
-        quantityInput.value = currentValue + 1;
-        updateTotalPrice(productId);
-    }
-}
-
-function decreaseQuantity(productId) {
-    const quantityInput = document.getElementById('quantity' + productId);
-    const currentValue = parseInt(quantityInput.value);
-    const minValue = parseInt(quantityInput.getAttribute('min'));
-    
-    if (currentValue > minValue) {
-        quantityInput.value = currentValue - 1;
-        updateTotalPrice(productId);
-    }
-}
-
-function updateTotalPrice(productId) {
-    const quantityInput = document.getElementById('quantity' + productId);
-    const totalPriceElement = document.getElementById('totalPrice' + productId);
-    const unitPrice = parseFloat(totalPriceElement.getAttribute('data-unit-price'));
-    const quantity = parseInt(quantityInput.value);
-    
-    const totalPrice = unitPrice * quantity;
-    totalPriceElement.textContent = '₹' + totalPrice.toFixed(0);
-}
-
-function addToCart(productName, productId) {
-    const quantity = document.getElementById('quantity' + productId).value;
-    const totalPrice = document.getElementById('totalPrice' + productId).textContent;
-    
-    alert(`Added ${quantity} x ${productName} to cart!\nTotal: ${totalPrice}`);
-    
-
-    console.log('Product:', productName, 'Quantity:', quantity, 'Total:', totalPrice);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const quantityInputs = document.querySelectorAll('.quantity-input');
-    quantityInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            const productId = this.id.replace('quantity', '');
-            const minValue = parseInt(this.getAttribute('min'));
-            const maxValue = parseInt(this.getAttribute('max'));
-            let currentValue = parseInt(this.value);
-            
-            if (isNaN(currentValue) || currentValue < minValue) {
-                this.value = minValue;
-            } else if (currentValue > maxValue) {
-                this.value = maxValue;
-            }
-            
-            updateTotalPrice(productId);
-        });
-    });
-});
-</script>
 
 {% include "utils/footer.htm" %}
 {% endblock content %}

@@ -1,0 +1,475 @@
+{% extends 'base.htm' %}
+{% load static %}
+
+{% block title %}
+{{ product.name }} | SL Micro Greens
+{% endblock title %}
+
+{% block content %}
+{% include "utils/navbar.htm" %}
+
+<div class="container-fluid px-4 py-5">
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-11 col-xl-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb d-flex align-items-center" 
+                    style="background: rgba(230, 232, 211, 0.1); padding: 1.2rem 2rem; 
+                           border-radius: 15px; border: 1px solid rgba(201, 154, 10, 0.3);
+                           margin-bottom: 0;">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <a href="{% url 'home' %}" class="cream-text hover-gold d-flex align-items-center" 
+                           style="text-decoration: none; font-weight: 500; gap: 0.5rem;">
+                            🏠 <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <a href="{% url 'categories' %}" class="cream-text hover-gold d-flex align-items-center" 
+                           style="text-decoration: none; font-weight: 500; gap: 0.5rem;">
+                            🛍️ <span>Products</span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <span class="gold-text" style="font-weight: 500;">{{ product.category.name }}</span>
+                    </li>
+                    <li class="breadcrumb-item active text-gradient d-flex align-items-center" aria-current="page" 
+                        style="font-weight: 600;">
+                        {{ product.name }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-xl-10">
+            <div class="hero-section p-4 p-lg-5" 
+                 style="background: linear-gradient(135deg, rgba(201, 154, 10, 0.15) 0%, rgba(230, 232, 211, 0.1) 100%); 
+                        border-radius: 25px; min-height: 70vh;">
+                <div class="row align-items-center h-100 g-5">
+                    <div class="col-lg-6">
+                        <div class="position-relative text-center">
+                            <img src="{{ product.image.url }}" 
+                                 alt="{{ product.name }}" 
+                                 class="img-fluid float-effect"
+                                 style="max-height: 550px; width: 100%; object-fit: cover; 
+                                        border-radius: 20px; box-shadow: 0 25px 50px rgba(201, 154, 10, 0.3);
+                                        border: 3px solid rgba(201, 154, 10, 0.5);">
+                            
+                            {% if product.popular %}
+                            <div class="position-absolute" style="top: 20px; right: 20px; z-index: 10;">
+                                <span class="badge float-delay-1" 
+                                      style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); 
+                                             color: #1b423a; font-size: 1rem; padding: 0.8rem 1.5rem; 
+                                             border-radius: 25px; font-weight: bold; 
+                                             box-shadow: 0 8px 20px rgba(201, 154, 10, 0.4);">
+                                    ⭐ Popular Choice
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="product-details h-100 d-flex flex-column justify-content-center">
+                            <div class="mb-4">
+                                <span class="badge float-effect d-inline-flex align-items-center" 
+                                      style="background: rgba(201, 154, 10, 0.2); border: 2px solid #c99a0a; 
+                                             color: #c99a0a; font-size: 1rem; padding: 0.7rem 1.8rem; 
+                                             border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; gap: 0.5rem;">
+                                    🌿 {{ product.category.name }}
+                                </span>
+                            </div>
+
+                            <h1 class="display-4 text-gradient mb-4 float-delay-1" 
+                                style="font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem !important;">
+                                {{ product.name }}
+                            </h1>
+
+                            <div class="mb-4">
+                                {% if product.in_stock %}
+                                    <span class="badge float-delay-2 d-inline-flex align-items-center" 
+                                          style="background: rgba(40, 167, 69, 0.2); border: 2px solid #28a745; 
+                                                 color: #28a745; font-size: 1rem; padding: 0.7rem 1.5rem; 
+                                                 border-radius: 20px; font-weight: 600; gap: 0.5rem;">
+                                        ✅ <span>In Stock - Ready to Ship</span>
+                                    </span>
+                                {% else %}
+                                    <span class="badge d-inline-flex align-items-center" 
+                                          style="background: rgba(220, 53, 69, 0.2); border: 2px solid #dc3545; 
+                                                 color: #dc3545; font-size: 1rem; padding: 0.7rem 1.5rem; 
+                                                 border-radius: 20px; font-weight: 600; gap: 0.5rem;">
+                                        ❌ <span>Currently Out of Stock</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-5">
+                                <div class="d-flex align-items-baseline mb-3 flex-wrap gap-3">
+                                    {% if product.old_price %}
+                                        <span class="text-muted" 
+                                              style="font-size: 1.6rem; text-decoration: line-through; opacity: 0.7;">
+                                            ₹{{ product.old_price }}
+                                        </span>
+                                        {% if discount_percentage %}
+                                        <span class="badge" 
+                                              style="background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; 
+                                                     color: #dc3545; font-size: 0.9rem; padding: 0.4rem 0.8rem; 
+                                                     border-radius: 12px; font-weight: 600;">
+                                            -{{ discount_percentage }}% OFF
+                                        </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-gradient me-3" 
+                                          style="font-size: 2.8rem; font-weight: 800; 
+                                                 text-shadow: 2px 2px 10px rgba(201, 154, 10, 0.3);">
+                                        ₹{{ product.new_price }}
+                                    </span>
+                                    {% if savings_amount %}
+                                    <div class="text-success" style="font-size: 1.1rem; font-weight: 600;">
+                                        <small>Save ₹{{ savings_amount }}</small>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+                                {% if product.in_stock %}
+                                    <button class="btn btn-lg px-4 py-3 float-delay-1 flex-fill" 
+                                            style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); 
+                                                   color: #1b423a; border: none; font-weight: bold; 
+                                                   border-radius: 15px; font-size: 1.1rem; min-height: 60px;
+                                                   box-shadow: 0 15px 30px rgba(201, 154, 10, 0.4);
+                                                   transition: all 0.3s ease; display: flex; align-items: center; 
+                                                   justify-content: center; gap: 0.5rem;">
+                                        🛒 <span>Add to Cart</span>
+                                    </button>
+                                    <button class="btn btn-lg px-4 py-3 float-delay-2" 
+                                            style="background: rgba(230, 232, 211, 0.1); 
+                                                   color: #e6e8d3; border: 2px solid #c99a0a; 
+                                                   border-radius: 15px; font-size: 1.1rem; font-weight: 600;
+                                                   backdrop-filter: blur(10px); min-height: 60px;
+                                                   transition: all 0.3s ease; display: flex; align-items: center; 
+                                                   justify-content: center; gap: 0.5rem;">
+                                        💖 <span>Wishlist</span>
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-lg px-4 py-3" disabled
+                                            style="background: rgba(108, 117, 125, 0.3); 
+                                                   color: #6c757d; border: none; border-radius: 15px; 
+                                                   font-size: 1.1rem; min-height: 60px; 
+                                                   display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                        ⛔ <span>Currently Unavailable</span>
+                                    </button>
+                                {% endif %}
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="stats-box float-effect text-center p-3" 
+                                         style="background: rgba(201, 154, 10, 0.15); 
+                                                border: 1px solid rgba(201, 154, 10, 0.3); 
+                                                border-radius: 15px; height: 100%;">
+                                        <div class="emoji-large mb-2" style="font-size: 2rem;">🌱</div>
+                                        <div class="stats-number mb-1" style="font-size: 1.4rem; font-weight: bold; color: #c99a0a;">100%</div>
+                                        <div class="cream-text fw-bold" style="font-size: 0.9rem;">Organic & Fresh</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="stats-box float-delay-1 text-center p-3" 
+                                         style="background: rgba(201, 154, 10, 0.15); 
+                                                border: 1px solid rgba(201, 154, 10, 0.3); 
+                                                border-radius: 15px; height: 100%;">
+                                        <div class="emoji-large mb-2" style="font-size: 2rem;">🚚</div>
+                                        <div class="stats-number mb-1" style="font-size: 1.4rem; font-weight: bold; color: #c99a0a;">24Hr</div>
+                                        <div class="cream-text fw-bold" style="font-size: 0.9rem;">Fast Delivery</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider my-5"></div>
+
+    {% if product.description %}
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-11 col-xl-10">
+            <div class="feature-card float-effect p-4 p-lg-5" 
+                 style="background: rgba(230, 232, 211, 0.1); border-radius: 20px; 
+                        border: 1px solid rgba(201, 154, 10, 0.2);">
+                <div class="row align-items-start g-4">
+                    <div class="col-lg-2 text-center">
+                        <div class="icon-box d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2.2rem; 
+                                    background: rgba(201, 154, 10, 0.2); border-radius: 50%; 
+                                    border: 2px solid rgba(201, 154, 10, 0.3);">
+                            📝
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <h3 class="text-gradient mb-4" style="font-size: 2.2rem; font-weight: 700;">
+                            Product Description
+                        </h3>
+                        <div class="cream-text" style="font-size: 1.2rem; line-height: 1.8; text-align: justify;">
+                            {{ product.description|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-11 col-xl-10">
+            <div class="text-center mb-5">
+                <h2 class="display-5 text-gradient mb-3 float-effect" style="font-weight: 700;">
+                    Why Choose Our Microgreens?
+                </h2>
+                <p class="cream-text fs-5" style="max-width: 600px; margin: 0 auto;">
+                    Premium quality that makes a difference in every meal
+                </p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card text-center h-100 float-effect p-4" 
+                         style="background: rgba(230, 232, 211, 0.1); border-radius: 20px; 
+                                border: 1px solid rgba(201, 154, 10, 0.2);">
+                        <div class="icon-box mb-4 d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2.5rem; 
+                                    background: rgba(201, 154, 10, 0.2); border-radius: 50%; 
+                                    border: 2px solid rgba(201, 154, 10, 0.3);">
+                            🌿
+                        </div>
+                        <h4 class="text-gradient mb-3" style="font-size: 1.6rem; font-weight: 600;">
+                            100% Organic
+                        </h4>
+                        <p class="cream-text" style="font-size: 1rem; line-height: 1.6;">
+                            Grown in pristine conditions without harmful chemicals, pesticides, or artificial additives for pure nutrition.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card text-center h-100 float-delay-1 p-4" 
+                         style="background: rgba(230, 232, 211, 0.1); border-radius: 20px; 
+                                border: 1px solid rgba(201, 154, 10, 0.2);">
+                        <div class="icon-box mb-4 d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2.5rem; 
+                                    background: rgba(201, 154, 10, 0.2); border-radius: 50%; 
+                                    border: 2px solid rgba(201, 154, 10, 0.3);">
+                            🛡️
+                        </div>
+                        <h4 class="text-gradient mb-3" style="font-size: 1.6rem; font-weight: 600;">
+                            Quality Assured
+                        </h4>
+                        <p class="cream-text" style="font-size: 1rem; line-height: 1.6;">
+                            Every batch undergoes rigorous quality checks to ensure you receive only the freshest, highest-grade microgreens.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card text-center h-100 float-delay-2 p-4" 
+                         style="background: rgba(230, 232, 211, 0.1); border-radius: 20px; 
+                                border: 1px solid rgba(201, 154, 10, 0.2);">
+                        <div class="icon-box mb-4 d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2.5rem; 
+                                    background: rgba(201, 154, 10, 0.2); border-radius: 50%; 
+                                    border: 2px solid rgba(201, 154, 10, 0.3);">
+                            💚
+                        </div>
+                        <h4 class="text-gradient mb-3" style="font-size: 1.6rem; font-weight: 600;">
+                            Nutrient Dense
+                        </h4>
+                        <p class="cream-text" style="font-size: 1rem; line-height: 1.6;">
+                            Packed with essential vitamins, minerals, and antioxidants - up to 40x more nutrients than mature vegetables.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if related_products %}
+    <div class="section-divider my-5"></div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-xl-10">
+            <div class="text-center mb-5">
+                <h2 class="display-5 text-gradient mb-3 float-effect" style="font-weight: 700;">
+                    You Might Also Love
+                </h2>
+                <p class="cream-text fs-5">More amazing products from {{ product.category.name }}</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                {% for related_product in related_products %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card h-100 float-effect" 
+                         style="background: rgba(230, 232, 211, 0.1); border-radius: 20px; 
+                                border: 1px solid rgba(201, 154, 10, 0.2); overflow: hidden;">
+                        <div class="position-relative">
+                            <img src="{{ related_product.image.url }}" 
+                                 alt="{{ related_product.name }}" 
+                                 class="w-100"
+                                 style="height: 250px; object-fit: cover;">
+                            {% if related_product.popular %}
+                            <div class="position-absolute" style="top: 15px; right: 15px; z-index: 10;">
+                                <span class="badge" 
+                                      style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); 
+                                             color: #1b423a; padding: 0.5rem 1rem; border-radius: 15px; 
+                                             font-weight: 600; font-size: 0.8rem;">
+                                    ⭐ Popular
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="p-4">
+                            <h5 class="text-gradient mb-3" style="font-size: 1.3rem; font-weight: 600; line-height: 1.3;">
+                                {{ related_product.name }}
+                            </h5>
+                            <div class="mb-4 d-flex align-items-center flex-wrap gap-2">
+                                {% if related_product.old_price %}
+                                    <span class="text-muted text-decoration-line-through" style="font-size: 1rem;">
+                                        ₹{{ related_product.old_price }}
+                                    </span>
+                                {% endif %}
+                                <span class="gold-text fw-bold" style="font-size: 1.3rem;">
+                                    ₹{{ related_product.new_price }}
+                                </span>
+                            </div>
+                            <a href="{% url 'specificproduct' related_product.id %}" 
+                               class="btn w-100 d-flex align-items-center justify-content-center" 
+                               style="background: linear-gradient(45deg, rgba(201, 154, 10, 0.2), rgba(230, 232, 211, 0.1)); 
+                                      color: #c99a0a; border: 2px solid #c99a0a; border-radius: 12px; 
+                                      font-weight: 600; padding: 0.8rem; font-size: 1rem;
+                                      transition: all 0.3s ease; gap: 0.5rem; min-height: 50px;">
+                                <span>View Details</span> →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 15px 35px rgba(201, 154, 10, 0.4) !important;
+}
+
+.category-card:hover .btn {
+    background: linear-gradient(45deg, #c99a0a, #e6e8d3) !important;
+    color: #1b423a !important;
+    transform: scale(1.02);
+}
+
+.float-effect:hover {
+    animation-duration: 2s;
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem !important;
+    }
+    
+    .display-5 {
+        font-size: 1.8rem !important;
+    }
+    
+    .hero-section {
+        min-height: auto !important;
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .d-flex.gap-3 {
+        gap: 1rem !important;
+    }
+    
+    .col-6 .stats-box {
+        padding: 1rem !important;
+    }
+    
+    .stats-box .emoji-large {
+        font-size: 1.5rem !important;
+    }
+    
+    .stats-box .stats-number {
+        font-size: 1.2rem !important;
+    }
+    
+    .stats-box .cream-text {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .breadcrumb {
+        padding: 1rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .hero-section .row {
+        gap: 2rem !important;
+    }
+    
+    .product-details {
+        text-align: center;
+    }
+    
+    .d-flex.flex-column.flex-sm-row {
+        flex-direction: column !important;
+    }
+}
+
+.badge {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    transform: scale(1.05);
+}
+
+.feature-card, .category-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover, .category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(201, 154, 10, 0.2);
+}
+
+.d-flex.align-items-center {
+    min-height: fit-content;
+}
+
+.text-gradient {
+    background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+</style>
+
+{% include "utils/footer.htm" %}
+{% endblock content %}

@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 import random
 
 
@@ -78,6 +79,33 @@ def cart(request):
     return render(request,"main/cart.htm")
 
 
+def specificproduct(request, id):
+    product = get_object_or_404(Product, id=id)
+    
+    related_products = Product.objects.filter(
+        category=product.category, 
+        in_stock=True
+    ).exclude(id=product.id).order_by('-popular', '-id')[:4]
+    
+    categories = Category.objects.all()
+    
+    discount_percentage = 0
+    if product.old_price and product.old_price > product.new_price:
+        discount_percentage = round(((product.old_price - product.new_price) / product.old_price) * 100)
+    
+    savings_amount = 0
+    if product.old_price and product.old_price > product.new_price:
+        savings_amount = product.old_price - product.new_price
+    
+    context = {
+        'product': product,
+        'related_products': related_products,
+        'categories': categories,
+        'discount_percentage': discount_percentage,
+        'savings_amount': savings_amount,
+    }
+    
+    return render(request, "main/specificproduct.htm", context)
 """
 AUTHENTICATION & AUTHORIZATION
 """
