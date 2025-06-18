@@ -1,6 +1,8 @@
 venv/
-__pycache__/
 media/
 migrations/
 .env
 db.sqlite3
+SanloopMicroGreens/__pycache__/
+APP/__pycache__/
+APP/migrations/__pycache__/
