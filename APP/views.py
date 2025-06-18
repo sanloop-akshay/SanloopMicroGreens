@@ -155,16 +155,22 @@ def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        remember_me = request.POST.get('remember_me')  
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('home')  
+
+            if not remember_me:
+                request.session.set_expiry(0)
+            else:
+                request.session.set_expiry(60 * 60 * 24 * 7) 
+
+            return redirect('home')
         else:
             messages.error(request, 'Invalid username or password.')
 
     return render(request, 'auth/signin.htm')
-
 
 
 def forgetpassword(request):
@@ -172,7 +178,7 @@ def forgetpassword(request):
         email = request.POST.get('email')
 
         if not User.objects.filter(email=email).exists():
-            messages.error(request, "No account found with this email.")
+            messages.error(request, "OTP sent to your email. Please verify.")
             return redirect('forgetpassword')
 
         otp_code = random.randint(100000, 999999)

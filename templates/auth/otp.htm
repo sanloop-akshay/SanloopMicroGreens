@@ -17,6 +17,15 @@ OTP Verification | SL Micro Greens
             <div class="feature-card" style="padding: 3rem 2.5rem;">
                 <form method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
+                    {% if messages %}
+                        <div class="mb-4">
+                            {% for message in messages %}
+                                <div class="text-center fw-bold" style="border: 2px solid #c99a0a; background: rgba(255, 0, 0, 0.05); color: #ff4d4d; border-radius: 12px; padding: 1rem;">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
                     <!-- OTP Field -->
                     <div class="mb-5">

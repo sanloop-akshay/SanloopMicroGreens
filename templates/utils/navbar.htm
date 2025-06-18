@@ -1,50 +1,57 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary p-5 fw-bold" style="box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.6);background-color: #c99a0a !important;color: #1b423a !important; font-size: 22px !important;">
   <div class="container-fluid">
-      <img src="{% static 'img/logo.png' %}" alt="Logo" style="height: 100px;width:250px;">
-      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
+    <img src="{% static 'img/logo.png' %}" alt="Logo" style="height: 100px;width:250px;">
+    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav align-items-center">
 
         <li class="nav-item">
           <a class="nav-link" href="/"><i class="fa fa-home"></i> Home</a>
         </li>
-        
+
         <li class="nav-item">
           <a class="nav-link" href="/categories"><i class="fa fa-cubes"></i> Products</a>
         </li>
-        
+
         <li class="nav-item">
           <a class="nav-link" href="/favorite"><i class="fa fa-heart"></i> Favorites</a>
         </li>
-        
+
         <li class="nav-item">
           <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"></i> Cart</a>
         </li>
-        
+
         <li class="nav-item">
           <a class="nav-link" href="/contactus"><i class="fa fa-headphones"></i> Contact Us</a>
         </li>
 
         {% if user.is_authenticated %}
-          {% with user.userprofile as profile %}
+          {% if user.userprofile %}
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">
+                <i class="fa fa-user"></i> {{ user.userprofile.fullname }}
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">
+                <i class="fa fa-user"></i> Profile
+              </a>
+            </li>
+          {% endif %}
+
           <li class="nav-item">
-            <span class="nav-link ">
-              <a class="nav-link" href="/profile"><i class="fa fa-user"></i> {{ profile.fullname }}</a>
-            </span>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="nav-link btn btn-link p-0 m-0 align-baseline" style="color: #1b423a;">
+                <i class="fa fa-sign-out-alt"></i> Logout
+              </button>
+            </form>
           </li>
-          {% endwith %}
-          
-        <form method="post" action="{% url 'logout' %}">
-          {% csrf_token %}
-          
-          <button type="submit" class="nav-link btn btn-link p-0 m-0 align-baseline" style="color: #1b423a;">
-            <i class="fa fa-sign-out-alt"></i> Logout
-          </button>
-        </form>
         {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'login' %}">
