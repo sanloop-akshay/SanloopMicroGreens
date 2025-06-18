@@ -25,7 +25,7 @@ def categories(request):
 def productCategory(request,productCategory):
     if Product.objects.filter(category=productCategory):
         productCategoryData = Product.objects.filter(category=productCategory)
-        return render(request,"main/products.htm",{'productCategoryData':productCategoryData})
+        return render(request,"main/products.htm",{'productCategoryData':productCategoryData,'productCategory':productCategory})
     else:
         return redirect("categories")
 
