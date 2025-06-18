@@ -29,8 +29,43 @@ def productCategory(request,productCategory):
         return redirect("categories")
 
 
+
 def contactus(request):
-    return render(request,"main/contact.htm")
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone', 'N/A')
+        inquiry_type = request.POST.get('inquiry_type')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+
+
+        html_message = f"""
+        <h2>New Contact Inquiry</h2>
+        <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; font-family: Arial, sans-serif;">
+            <tr><th align="left">First Name</th><td>{first_name}</td></tr>
+            <tr><th align="left">Last Name</th><td>{last_name}</td></tr>
+            <tr><th align="left">Email</th><td>{email}</td></tr>
+            <tr><th align="left">Phone</th><td>{phone}</td></tr>
+            <tr><th align="left">Inquiry Type</th><td>{inquiry_type}</td></tr>
+            <tr><th align="left">Subject</th><td>{subject}</td></tr>
+            <tr><th align="left">Message</th><td>{message.replace('\n', '<br>')}</td></tr>
+        </table>
+        """
+
+        send_mail(
+            subject=f"Contact Form Submission: {subject}",
+            message=html_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[settings.EMAIL_HOST_USER],
+            html_message=html_message,
+        )
+
+        return render(request, "main/contact.htm", {"success": True})
+
+    return render(request, "main/contact.htm")
 
 
 

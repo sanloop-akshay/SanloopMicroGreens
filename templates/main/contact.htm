@@ -98,7 +98,9 @@ Contact Us | SL Micro Greens
     <div class="text-center mb-5">
         <h2 class="display-4 text-gradient float-effect">📝 Send Us A Message</h2>
         <p class="lead cream-text">Fill out the form below and we'll get back to you soon</p>
-        <div class="section-divider"></div>
+        <div class="section-divider">
+
+        </div>
     </div>
     
     <div class="row justify-content-center">
@@ -106,6 +108,12 @@ Contact Us | SL Micro Greens
             <div class="feature-card">
                 <form id="contactForm" method="POST" action="">
                     {% csrf_token %}
+
+                {% if success %}
+                    <div class="alert alert-success text-center">
+                        Thank you for reaching out! We'll get back to you shortly.
+                    </div>
+                {% endif %}
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label for="firstName" class="form-label cream-text">First Name *</label>
@@ -161,15 +169,7 @@ Contact Us | SL Micro Greens
                                   placeholder="Tell us about your requirements, preferred quantities, delivery schedule, or any specific questions..."></textarea>
                     </div>
                     
-                    <div class="mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter"
-                                   style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a;">
-                            <label class="form-check-label cream-text" for="newsletter">
-                                Subscribe to our newsletter for updates on new products and farming tips
-                            </label>
-                        </div>
-                    </div>
+
                     
                     <div class="text-center">
                         <button type="submit" class="btn btn-lg px-5 py-3" 
