@@ -12,7 +12,6 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 import random
 
-# Create your views here.
 
 def home(request):
     return render(request,"main/home.htm")
@@ -30,7 +29,6 @@ def productCategory(request,productCategory):
         return redirect("categories")
 
 
-
 def contactus(request):
     return render(request,"main/contact.htm")
 
@@ -45,8 +43,6 @@ def favorite(request):
 
 def cart(request):
     return render(request,"main/cart.htm")
-
-
 
 
 """
@@ -224,7 +220,7 @@ def profile(request):
         profile.pincode = request.POST.get('pincode')
         profile.save()
         messages.success(request, "Profile updated successfully.")
-        return redirect('profile')  # reload page after update
+        return redirect('profile')  
 
     return render(request, "main/profile.htm", {'profile': profile})
 
