@@ -24,7 +24,15 @@ Login | SL Micro Greens
                 <form method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
                     
-                    <!-- Email/Username Field -->
+                    {% if messages %}
+                        <div class="mb-4">
+                            {% for message in messages %}
+                                <div class="alert alert-danger text-center fw-bold" style="border-radius: 12px; background-color: rgba(255, 0, 0, 0.1); color: #ff4d4d;">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     <div class="mb-4">
                         <label for="username" class="form-label gold-text fw-bold fs-6 mb-3">
                             <i class="fas fa-user me-2"></i>Email or Username

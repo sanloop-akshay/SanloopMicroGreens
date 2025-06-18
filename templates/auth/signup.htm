@@ -17,6 +17,15 @@ Sign Up | SL Micro Greens
             <div class="feature-card" style="padding: 3rem 2.5rem;">
                 <form method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
+                {% if messages %}
+                    <div class="mb-4">
+                        {% for message in messages %}
+                            <div class="alert alert-danger text-center fw-bold" style="border-radius: 12px; background-color: rgba(255, 0, 0, 0.1); color: #ff4d4d;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
                     <!-- Full Name -->
                     <div class="mb-4">

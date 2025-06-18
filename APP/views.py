@@ -99,7 +99,7 @@ def signup(request):
         email = request.session['signup_data']['email']
 
         if User.objects.filter(username=email).exists():
-            messages.error(request, "An account with this email already exists.")
+            messages.error(request, "Something Went Wrong!!!")
             return redirect('signup')
 
         otp_code = str(random.randint(100000, 999999))
