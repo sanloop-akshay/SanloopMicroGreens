@@ -69,8 +69,6 @@ def contactus(request):
 
 
 
-def otp(request):
-    return render(request,"auth/otp.htm")
 
 
 def favorite(request):
@@ -87,7 +85,6 @@ AUTHENTICATION & AUTHORIZATION
 
 def signup(request):
     if request.method == 'POST':
-        # Collect form data
         request.session['signup_data'] = {
             'fullname': request.POST.get('fullname'),
             'street': request.POST.get('street'),
