@@ -1,12 +1,483 @@
-{% extends 'base.htm' %}
+{% extends "base.htm" %}
+{% load static %}
+
 {% block title %}
-Favorite | SL Micro Greens
+Favorites | SL Micro Greens
 {% endblock title %}
 
 {% block content %}
 {% include "utils/navbar.htm" %}
 
+<div class="container my-5 pt-5">
+            <div class="row justify-content-center mb-5">
+        <div class="col-lg-11 col-xl-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb d-flex align-items-center" 
+                    style="background: rgba(230, 232, 211, 0.1); padding: 1.2rem 2rem; 
+                           border-radius: 15px; border: 1px solid rgba(201, 154, 10, 0.3);
+                           margin-bottom: 0;">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <a href="{% url 'home' %}" class="cream-text hover-gold d-flex align-items-center" 
+                           style="text-decoration: none; font-weight: 500; gap: 0.5rem;">
+                            🏠 <span>Home</span>
+                        </a>
+                    </li>
 
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <span class="gold-text" style="font-weight: 500;">💖 Favorites</span>
+                    </li>
+
+                </ol>
+            </nav>
+        </div>
+    </div>
+    {% if favorites %}
+        <div class="hero-section">
+        <div class="row w-100 align-items-center">
+            <div class="col-12 text-center">
+                <h1 class="display-1 fw-bold text-gradient float-effect mb-4">
+                    Your Favorites {{ favorites|length }} items 🌱
+                </h1>
+
+                <p class="lead cream-text float-delay-2">Your handpicked selection of premium micro greens.</p>
+            </div>
+        </div>
+    </div>
+
+        
+
+        <!-- Favorites Grid -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+            {% for favorite in favorites %}
+                <div class="col favorite-card-wrapper float-delay-{{ forloop.counter0|add:1|divisibleby:3|yesno:"1,2" }}">
+                    <div class="favorite-card h-100">
+                        <div class="favorite-image-container">
+                            <img src="{{ favorite.product.image.url }}" 
+                                 class="favorite-image" 
+                                 alt="{{ favorite.product.name }}"
+                                 loading="lazy">
+                            <div class="favorite-overlay">
+                                <span class="emoji-large">🌱</span>
+                            </div>
+                        </div>
+                        
+                        <div class="favorite-content">
+                            <h5 class="favorite-title gold-text mb-2">{{ favorite.product.name }}</h5>
+                            
+                            <div class="favorite-meta mb-3">
+                                <small class="cream-text">
+                                    <i class="fas fa-heart"></i>
+                                    Added on {{ favorite.added_at|date:"M j, Y" }}
+                                </small>
+                            </div>
+                            
+                            {% if favorite.product.description %}
+                                <p class="favorite-description cream-text mb-3">
+                                    {{ favorite.product.description|truncatewords:15 }}
+                                </p>
+                            {% endif %}
+                            
+                            {% if favorite.product.price %}
+                                <div class="price-section mb-3">
+                                    <span class="price-text gold-text fw-bold">
+                                        ${{ favorite.product.price }}
+                                    </span>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="favorite-actions d-flex gap-2 mt-auto">
+                                <a href="products/{{ favorite.product.id }}" 
+                                   class="btn btn-outline-warning flex-fill">
+                                    <i class="fas fa-eye me-1"></i>
+                                    View Details
+                                </a>
+                                
+                                <form method="post" 
+                                      action="{% url 'toggle_favorite' %}" 
+                                      class="toggle-favorite-form flex-fill" 
+                                      data-product-id="{{ favorite.product.id }}">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            class="btn btn-outline-danger w-100"
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Remove from favorites">
+                                        <i class="fas fa-heart-broken me-1"></i>
+                                        Remove
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="text-center mt-5">
+            <div class="feature-card d-inline-block">
+                <h4 class="gold-text mb-3">Quick Actions</h4>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="" class="btn btn-warning">
+                        <i class="fas fa-shopping-bag me-2"></i>
+                        Continue Shopping
+                    </a>
+                    <a href="" class="btn btn-outline-warning">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        View Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- Empty State -->
+        <div class="no-favorites text-center">
+            <div class="empty-state-icon mb-4">
+                <span class="emoji-large">💚</span>
+            </div>
+            <h3 class="gold-text mb-3">No Favorites Yet</h3>
+            <p class="cream-text mb-4 lead">
+                Start building your collection of favorite micro greens!<br>
+                Browse our premium selection and add items to your favorites.
+            </p>
+            <a href="" class="btn btn-warning btn-lg">
+                <i class="fas fa-seedling me-2"></i>
+                Explore Our Products
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Favorite Cards */
+    .favorite-card {
+        background: rgba(230, 232, 211, 0.1);
+        border: 2px solid #c99a0a;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        backdrop-filter: blur(10px);
+        position: relative;
+    }
+    
+    .favorite-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(201, 154, 10, 0.4);
+        border-color: #e6e8d3;
+    }
+    
+    .favorite-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+    }
+    
+    .favorite-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    
+    .favorite-card:hover .favorite-image {
+        transform: scale(1.1);
+    }
+    
+    .favorite-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 2rem;
+    }
+    
+    .favorite-card:hover .favorite-overlay {
+        opacity: 1;
+    }
+    
+    .favorite-content {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 250px);
+        min-height: 200px;
+    }
+    
+    .favorite-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .favorite-meta {
+        font-size: 0.85rem;
+        opacity: 0.8;
+    }
+    
+    .favorite-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        flex-grow: 1;
+    }
+    
+    .favorite-actions {
+        margin-top: auto;
+    }
+    
+    /* Button Styles */
+    .btn-outline-warning {
+        border-color: #c99a0a;
+        color: #c99a0a;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .btn-outline-warning:hover {
+        background-color: #c99a0a;
+        border-color: #c99a0a;
+        color: #1b423a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(201, 154, 10, 0.3);
+    }
+    
+    .btn-warning {
+        background-color: #c99a0a;
+        border-color: #c99a0a;
+        color: #1b423a;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-warning:hover {
+        background-color: #e6e8d3;
+        border-color: #e6e8d3;
+        color: #1b423a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(201, 154, 10, 0.3);
+    }
+    
+    .btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    }
+    
+    /* Price Section */
+    .price-section {
+        background: rgba(201, 154, 10, 0.15);
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        border: 1px solid rgba(201, 154, 10, 0.3);
+        text-align: center;
+    }
+    
+    .price-text {
+        font-size: 1.2rem;
+    }
+    
+    /* Empty State */
+    .no-favorites {
+        background: rgba(230, 232, 211, 0.1);
+        border: 2px solid #c99a0a;
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        margin: 3rem 0;
+        backdrop-filter: blur(10px);
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        opacity: 0.8;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 2rem 1rem;
+            margin: 1rem 0;
+        }
+        
+        .favorite-content {
+            padding: 1.5rem;
+        }
+        
+        .display-1 {
+            font-size: 2.5rem;
+        }
+        
+        .favorite-image-container {
+            height: 200px;
+        }
+        
+        .favorite-actions {
+            flex-direction: column;
+        }
+        
+        .favorite-actions .btn {
+            margin-bottom: 0.5rem;
+        }
+        
+        .no-favorites {
+            padding: 3rem 1.5rem;
+        }
+        
+        .stats-box {
+            margin: 0 1rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .favorite-card {
+            margin-bottom: 1.5rem;
+        }
+        
+        .favorite-title {
+            font-size: 1.2rem;
+        }
+        
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Handle favorite removal
+    const forms = document.querySelectorAll('.toggle-favorite-form');
+
+    forms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const productId = this.dataset.productId;
+            const csrfToken = this.querySelector('[name=csrfmiddlewaretoken]').value;
+            const cardWrapper = this.closest('.favorite-card-wrapper');
+            const button = this.querySelector('button[type="submit"]');
+            
+            // Add loading state
+            const originalContent = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Removing...';
+            button.disabled = true;
+
+            // Confirmation dialog
+            if (!confirm('Are you sure you want to remove this item from your favorites?')) {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                return;
+            }
+
+            fetch("{% url 'toggle_favorite' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Smooth removal animation
+                    cardWrapper.style.transition = 'all 0.5s ease';
+                    cardWrapper.style.transform = 'scale(0)';
+                    cardWrapper.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        cardWrapper.remove();
+                        
+                        // Check if no favorites left
+                        const remainingCards = document.querySelectorAll('.favorite-card-wrapper');
+                        if (remainingCards.length === 0) {
+                            location.reload(); // Reload to show empty state
+                        } else {
+                            // Update count
+                            const statsNumber = document.querySelector('.stats-number');
+                            if (statsNumber) {
+                                statsNumber.textContent = remainingCards.length;
+                            }
+                        }
+                    }, 500);
+                    
+                    // Show success message
+                    showNotification('Item removed from favorites!', 'success');
+                } else {
+                    button.innerHTML = originalContent;
+                    button.disabled = false;
+                    showNotification(data.error || 'Something went wrong.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                showNotification('Request failed. Please try again.', 'error');
+            });
+        });
+    });
+
+    // Notification function
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 3000);
+    }
+
+    // Add stagger animation to cards
+    const cards = document.querySelectorAll('.favorite-card-wrapper');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.animation = 'fadeInUp 0.6s ease forwards';
+    });
+
+    // Add CSS for fade in animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
 
 {% include "utils/footer.htm" %}
 {% endblock content %}

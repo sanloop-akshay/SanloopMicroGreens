@@ -23,6 +23,8 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('profile',views.profile,name="profile"),
     path('error',views.error,name="error"),
+    path('toggle-favorite/', views.toggle_favorite, name='toggle_favorite'),
+
     
 
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Category,Product,UserProfile
+from .models import Category,Product,UserProfile,Favorite
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth import login
@@ -11,7 +11,10 @@ from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-import random
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import random,json
+
 
 
 def home(request):
@@ -72,8 +75,18 @@ def contactus(request):
 
 
 
+
+
+@login_required
 def favorite(request):
-    return render(request,"main/favorite.htm")
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        favorites = Favorite.objects.filter(user=user_profile).select_related('product')
+    except UserProfile.DoesNotExist:
+        favorites = []
+
+    return render(request, "main/favorite.htm", {"favorites": favorites})
+
 
 def cart(request):
     return render(request,"main/cart.htm")
@@ -106,6 +119,85 @@ def specificproduct(request, id):
     }
     
     return render(request, "main/specificproduct.htm", context)
+
+
+
+def specificproduct(request, id):
+    product = get_object_or_404(Product, id=id)
+    
+    related_products = Product.objects.filter(
+        category=product.category, 
+        in_stock=True
+    ).exclude(id=product.id).order_by('-popular', '-id')[:4]
+    
+    categories = Category.objects.all()
+    
+    discount_percentage = 0
+    if product.old_price and product.old_price > product.new_price:
+        discount_percentage = round(((product.old_price - product.new_price) / product.old_price) * 100)
+    
+    savings_amount = 0
+    if product.old_price and product.old_price > product.new_price:
+        savings_amount = product.old_price - product.new_price
+    
+    # Check if product is in user's favorites
+    is_favorite = False
+    if request.user.is_authenticated:
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            is_favorite = Favorite.objects.filter(user=user_profile, product=product).exists()
+        except UserProfile.DoesNotExist:
+            is_favorite = False
+    
+    context = {
+        'product': product,
+        'related_products': related_products,
+        'categories': categories,
+        'discount_percentage': discount_percentage,
+        'savings_amount': savings_amount,
+        'is_favorite': is_favorite,
+    }
+    
+    return render(request, "main/specificproduct.htm", context)
+
+@login_required
+@csrf_exempt
+def toggle_favorite(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            
+            if not product_id:
+                return JsonResponse({'success': False, 'error': 'Product ID required'})
+            
+            product = get_object_or_404(Product, id=product_id)
+            user_profile = get_object_or_404(UserProfile, user=request.user)
+            
+            favorite_exists = Favorite.objects.filter(user=user_profile, product=product).first()
+            
+            if favorite_exists:
+                favorite_exists.delete()
+                is_favorite = False
+                message = 'Removed from favorites'
+            else:
+                Favorite.objects.create(user=user_profile, product=product)
+                is_favorite = True
+                message = 'Added to favorites'
+            
+            return JsonResponse({
+                'success': True,
+                'is_favorite': is_favorite,
+                'message': message
+            })
+            
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+
 """
 AUTHENTICATION & AUTHORIZATION
 """

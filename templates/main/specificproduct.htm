@@ -146,14 +146,18 @@
                                                    justify-content: center; gap: 0.5rem;">
                                         🛒 <span>Add to Cart</span>
                                     </button>
-                                    <button class="btn btn-lg px-4 py-3 float-delay-2" 
-                                            style="background: rgba(230, 232, 211, 0.1); 
-                                                   color: #e6e8d3; border: 2px solid #c99a0a; 
+                                    <button id="favoriteBtn" 
+                                            class="btn btn-lg px-4 py-3 float-delay-2" 
+                                            data-product-id="{{ product.id }}"
+                                            style="background: {% if is_favorite %}linear-gradient(45deg, #dc3545, #ff6b7d){% else %}rgba(230, 232, 211, 0.1){% endif %}; 
+                                                   color: {% if is_favorite %}#fff{% else %}#e6e8d3{% endif %}; 
+                                                   border: 2px solid {% if is_favorite %}#dc3545{% else %}#c99a0a{% endif %}; 
                                                    border-radius: 15px; font-size: 1.1rem; font-weight: 600;
                                                    backdrop-filter: blur(10px); min-height: 60px;
                                                    transition: all 0.3s ease; display: flex; align-items: center; 
                                                    justify-content: center; gap: 0.5rem;">
-                                        💖 <span>Wishlist</span>
+                                        <span id="favoriteIcon">{% if is_favorite %}❤️{% else %}💖{% endif %}</span> 
+                                        <span id="favoriteText">{% if is_favorite %}Favorited{% else %}Wishlist{% endif %}</span>
                                     </button>
                                 {% else %}
                                     <button class="btn btn-lg px-4 py-3" disabled
@@ -362,6 +366,16 @@
     {% endif %}
 </div>
 
+<!-- Toast Notification -->
+<div id="favoriteToast" class="toast position-fixed" style="top: 20px; right: 20px; z-index: 9999; display: none;">
+    <div class="toast-header" style="background: rgba(201, 154, 10, 0.1); border-bottom: 1px solid rgba(201, 154, 10, 0.3);">
+        <strong class="me-auto text-gradient">Favorites</strong>
+        <button type="button" class="btn-close" onclick="hideToast()"></button>
+    </div>
+    <div class="toast-body" id="toastMessage" style="background: rgba(230, 232, 211, 0.1); color: #e6e8d3;">
+    </div>
+</div>
+
 <style>
 .btn:hover {
     transform: translateY(-2px) !important;
@@ -377,6 +391,36 @@
 .float-effect:hover {
     animation-duration: 2s;
     transform: translateY(-3px);
+}
+
+#favoriteBtn {
+    position: relative;
+    overflow: hidden;
+}
+
+#favoriteBtn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+#favoriteBtn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.toast {
+    border: 1px solid rgba(201, 154, 10, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 @media (max-width: 768px) {
@@ -470,6 +514,136 @@
     50% { background-position: 100% 50%; }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteBtn = document.getElementById('favoriteBtn');
+    const favoriteIcon = document.getElementById('favoriteIcon');
+    const favoriteText = document.getElementById('favoriteText');
+    const toast = document.getElementById('favoriteToast');
+    const toastMessage = document.getElementById('toastMessage');
+
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            
+            // Check if user is authenticated
+
+
+            // Disable button temporarily
+            favoriteBtn.disabled = true;
+            favoriteBtn.style.opacity = '0.7';
+
+            fetch('/toggle-favorite/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    'product_id': productId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateFavoriteButton(data.is_favorite);
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.error || 'Something went wrong!', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Network error. Please try again!', 'error');
+            })
+            .finally(() => {
+                // Re-enable button
+                favoriteBtn.disabled = false;
+                favoriteBtn.style.opacity = '1';
+            });
+        });
+    }
+
+    function updateFavoriteButton(isFavorite) {
+        if (isFavorite) {
+            favoriteBtn.style.background = 'linear-gradient(45deg, #dc3545, #ff6b7d)';
+            favoriteBtn.style.color = '#fff';
+            favoriteBtn.style.borderColor = '#dc3545';
+            favoriteIcon.textContent = '❤️';
+            favoriteText.textContent = 'Favorited';
+        } else {
+            favoriteBtn.style.background = 'rgba(230, 232, 211, 0.1)';
+            favoriteBtn.style.color = '#e6e8d3';
+            favoriteBtn.style.borderColor = '#c99a0a';
+            favoriteIcon.textContent = '💖';
+            favoriteText.textContent = 'Wishlist';
+        }
+    }
+
+    function showToast(message, type) {
+        toastMessage.textContent = message;
+        
+        // Set toast colors based on type
+        const toastHeader = toast.querySelector('.toast-header');
+        const toastBody = toast.querySelector('.toast-body');
+        
+        if (type === 'success') {
+            toastHeader.style.background = 'rgba(40, 167, 69, 0.1)';
+            toastHeader.style.borderColor = 'rgba(40, 167, 69, 0.3)';
+            toastBody.style.background = 'rgba(40, 167, 69, 0.1)';
+            toastBody.style.color = '#28a745';
+        } else {
+            toastHeader.style.background = 'rgba(220, 53, 69, 0.1)';
+            toastHeader.style.borderColor = 'rgba(220, 53, 69, 0.3)';
+            toastBody.style.background = 'rgba(220, 53, 69, 0.1)';
+            toastBody.style.color = '#dc3545';
+        }
+        
+        toast.style.display = 'block';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        
+        // Animate in
+        setTimeout(() => {
+            toast.style.transition = 'all 0.3s ease';
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(0)';
+        }, 10);
+        
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+            hideToast();
+        }, 3000);
+    }
+
+    window.hideToast = function() {
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 300);
+    }
+
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
 
 {% include "utils/footer.htm" %}
 {% endblock content %}
