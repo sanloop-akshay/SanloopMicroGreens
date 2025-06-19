@@ -6,18 +6,144 @@ Cart | SL Micro Greens
 {% block content %}
 {% include "utils/navbar.htm" %}
 
-<h2>Your Cart ({{ total_items }} items)</h2>
-{% for item in cart_items %}
-<div class="card mb-2 p-3">
-    <h4>{{ item.product.name }}</h4>
-    <p>Quantity: {{ item.quantity }}</p>
-    <p>Price per item: ₹{{ item.product.price }}</p>
-    {% comment %} <p>Subtotal: ₹{{ item.quantity|multiply:item.product.price }}</p> {% endcomment %}
+<!-- Hero Section -->
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="display-4 text-gradient mb-3">Your Cart</h1>
+            <p class="lead cream-text">Review your fresh micro greens selection</p>
+            <div class="stats-box">
+                <div class="stats-number">{{ total_items }}</div>
+                <div class="cream-text">Items in Cart</div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <span class="emoji-large float-effect">🛒</span>
+        </div>
+    </div>
 </div>
-{% empty %}
-<p>Your cart is empty.</p>
-{% endfor %}
 
+<div class="section-divider"></div>
+
+<!-- Cart Items Section -->
+<div class="container">
+    {% if cart_items %}
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+            <h3 class="gold-text mb-4"><span class="emoji-large" style="font-size: 1.5rem;">🌱</span> Cart Items</h3>
+
+            {% for item in cart_items %}
+            <div class="feature-card mb-4 p-3">
+                <div class="row align-items-center text-center text-md-start">
+                    <div class="col-12 col-md-2">
+                        <div class="icon-box mx-auto" style="font-size: 2rem;">🥬</div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5 class="text-gradient mb-1">{{ item.product.name }}</h5>
+                        <p class="cream-text mb-0">Fresh & Organic</p>
+                    </div>
+                    <div class="col-4 col-md-2 mt-3 mt-md-0">
+                        <div class="stats-box">
+                            <div class="stats-number">{{ item.quantity }}</div>
+                            <div class="cream-text small">Qty</div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 mt-3 mt-md-0">
+                        <p class="gold-text mb-1">₹{{ item.product.price }}</p>
+                        <p class="cream-text small">per item</p>
+                    </div>
+                    <div class="col-4 col-md-1 mt-3 mt-md-0">
+                        <div class="stats-box">
+                            <div class="stats-number">₹ 500</div>
+                            <div class="cream-text small">Subtotal</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-1 mt-3 mt-md-0 text-center">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm" style="background: rgba(220,53,69,0.2); color: #dc3545; border: 2px solid #dc3545; border-radius: 50%; width: 40px; height: 40px;"
+                                onmouseover="this.style.background='#dc3545'; this.style.color='white'; this.style.transform='scale(1.1)'"
+                                onmouseout="this.style.background='rgba(220,53,69,0.2)'; this.style.color='#dc3545'; this.style.transform='scale(1)'">
+                                🗑️
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Summary -->
+        <div class="col-lg-4">
+            <div class="feature-card p-4" style="position: sticky; top: 20px;">
+                <h4 class="text-gradient text-center mb-4">💰 Order Summary</h4>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="cream-text">Items ({{ total_items }})</span>
+                    <span class="gold-text">₹{{ cart_total }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="cream-text">Delivery</span>
+                    <span class="gold-text">Free</span>
+                </div>
+                <div class="section-divider my-3"></div>
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="text-gradient h5">Total</span>
+                    <span class="text-gradient h5">₹{{ cart_total }}</span>
+                </div>
+
+                <button class="btn btn-lg w-100 mb-3" style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); color: #1b423a; border-radius: 15px;">
+                    Proceed to Checkout
+                </button>
+
+                <a href="" class="btn btn-outline-light w-100" style="border-color: #c99a0a; color: #c99a0a; border-radius: 15px;">
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Perks -->
+    <div class="section-divider my-5"></div>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="icon-box">🚚</div>
+                <h5 class="gold-text">Free Delivery</h5>
+                <p class="cream-text">Free delivery on all orders above ₹500</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="icon-box">🌿</div>
+                <h5 class="gold-text">Fresh Guarantee</h5>
+                <p class="cream-text">100% fresh micro greens delivered to your door</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="icon-box">💚</div>
+                <h5 class="gold-text">Organic & Healthy</h5>
+                <p class="cream-text">Grown without chemicals, pure nutrition</p>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Empty Cart -->
+    <div class="text-center my-5">
+        <span class="emoji-large float-effect">🛒</span>
+        <h3 class="text-gradient mb-3">Your Cart is Empty</h3>
+        <p class="cream-text">Looks like you haven't added any fresh micro greens yet.</p>
+        <a href="{% url 'shop_home' %}" class="btn btn-lg" style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); color: #1b423a; border-radius: 15px;">
+            🌱 Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="section-divider my-5"></div>
 
 {% include "utils/footer.htm" %}
 {% endblock content %}
