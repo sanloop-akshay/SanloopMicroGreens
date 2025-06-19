@@ -143,8 +143,8 @@
                                                    border-radius: 15px; font-size: 1.1rem; min-height: 60px;
                                                    box-shadow: 0 15px 30px rgba(201, 154, 10, 0.4);
                                                    transition: all 0.3s ease; display: flex; align-items: center; 
-                                                   justify-content: center; gap: 0.5rem;">
-                                        🛒 <span>Add to Cart</span>
+                                                   justify-content: center; gap: 0.5rem;" id="addToCartBtn" data-product-id="{{ product.id }}">
+                                        Add to Cart
                                     </button>
                                     <button id="favoriteBtn" 
                                             class="btn btn-lg px-4 py-3 float-delay-2" 
@@ -522,6 +522,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const favoriteText = document.getElementById('favoriteText');
     const toast = document.getElementById('favoriteToast');
     const toastMessage = document.getElementById('toastMessage');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+
+
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function () {
+            const productId = this.getAttribute('data-product-id');
+
+            fetch('/add-to-cart/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    'product_id': productId,
+                    'quantity': 1  // default to 1, or dynamic if needed
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showToast(data.message, data.success ? 'success' : 'error');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Error adding to cart', 'error');
+            });
+        });
+    }
 
     if (favoriteBtn) {
         favoriteBtn.addEventListener('click', function() {
@@ -643,6 +671,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return cookieValue;
     }
 });
+
+
+
+
 </script>
 
 {% include "utils/footer.htm" %}

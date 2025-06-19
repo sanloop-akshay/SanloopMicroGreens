@@ -6,6 +6,17 @@ Cart | SL Micro Greens
 {% block content %}
 {% include "utils/navbar.htm" %}
 
+<h2>Your Cart ({{ total_items }} items)</h2>
+{% for item in cart_items %}
+<div class="card mb-2 p-3">
+    <h4>{{ item.product.name }}</h4>
+    <p>Quantity: {{ item.quantity }}</p>
+    <p>Price per item: ₹{{ item.product.price }}</p>
+    {% comment %} <p>Subtotal: ₹{{ item.quantity|multiply:item.product.price }}</p> {% endcomment %}
+</div>
+{% empty %}
+<p>Your cart is empty.</p>
+{% endfor %}
 
 
 {% include "utils/footer.htm" %}

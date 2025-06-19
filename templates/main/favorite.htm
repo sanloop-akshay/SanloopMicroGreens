@@ -43,11 +43,7 @@ Favorites | SL Micro Greens
             </div>
         </div>
     </div>
-
-        
-
-        <!-- Favorites Grid -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
             {% for favorite in favorites %}
                 <div class="col favorite-card-wrapper float-delay-{{ forloop.counter0|add:1|divisibleby:3|yesno:"1,2" }}">
                     <div class="favorite-card h-100">

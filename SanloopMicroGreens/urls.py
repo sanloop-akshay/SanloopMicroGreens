@@ -17,6 +17,7 @@ urlpatterns = [
     path("forget-password",views.forgetpassword,name="forgetpassword"),
     path('otp',views.otp,name="otp"),
     path('cart',views.cart,name="cart"),
+    path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
     path('favorite',views.favorite,name="favorite"),
     path('reset-password-otp', views.reset_password_otp, name='reset_password_otp'),
     path('reset-password/', views.reset_password, name='reset_password'),

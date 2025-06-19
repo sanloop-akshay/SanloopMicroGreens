@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Category,Product,UserProfile,Favorite
+from .models import Category,Product,UserProfile,Favorite,CartItem
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth import login
@@ -88,9 +88,16 @@ def favorite(request):
     return render(request, "main/favorite.htm", {"favorites": favorites})
 
 
+@login_required
 def cart(request):
-    return render(request,"main/cart.htm")
+    user_profile = UserProfile.objects.get(user=request.user)
+    cart_items = CartItem.objects.filter(user=user_profile).select_related('product')
+    total_items = sum(item.quantity for item in cart_items)
 
+    return render(request, "main/cart.htm", {
+        'cart_items': cart_items,
+        'total_items': total_items
+    })
 
 def specificproduct(request, id):
     product = get_object_or_404(Product, id=id)
@@ -196,6 +203,39 @@ def toggle_favorite(request):
     
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
+
+
+
+@csrf_exempt
+@login_required
+def add_to_cart(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            quantity = int(data.get('quantity', 1))
+
+            product = Product.objects.get(id=product_id)
+            user_profile = UserProfile.objects.get(user=request.user)
+
+            cart_item, created = CartItem.objects.get_or_create(
+                user=user_profile,
+                product=product,
+                defaults={'quantity': quantity}
+            )
+
+            if not created:
+                print("created")
+                cart_item.quantity += quantity
+                cart_item.save()
+
+            return JsonResponse({'success': True, 'message': 'Product added to cart.'})
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 
 """
