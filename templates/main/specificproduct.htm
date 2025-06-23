@@ -137,6 +137,11 @@
 
                             <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
                                 {% if product.in_stock %}
+                                    <div class="d-flex align-items-center gap-3 mb-4 float-effect" style="max-width: 200px;">
+                                        <button class="btn btn-sm btn-outline-warning" type="button" onclick="adjustQty(-1)">−</button>
+                                        <input type="number" id="productQty" value="1" min="1" class="form-control text-center" style="width: 60px;" />
+                                        <button class="btn btn-sm btn-outline-warning" type="button" onclick="adjustQty(1)">+</button>
+                                    </div>
                                     <button class="btn btn-lg px-4 py-3 float-delay-1 flex-fill" 
                                             style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); 
                                                    color: #1b423a; border: none; font-weight: bold; 
@@ -514,7 +519,6 @@
     50% { background-position: 100% 50%; }
 }
 </style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const favoriteBtn = document.getElementById('favoriteBtn');
@@ -524,10 +528,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const toastMessage = document.getElementById('toastMessage');
     const addToCartBtn = document.getElementById('addToCartBtn');
 
+    // Quantity adjustment (+/- buttons)
+    window.adjustQty = function(amount) {
+        const qtyInput = document.getElementById("productQty");
+        let current = parseInt(qtyInput.value);
+        if (!isNaN(current)) {
+            current = Math.max(1, current + amount); 
+            qtyInput.value = current;
+        }
+    }
 
+    // Add to cart
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', function () {
             const productId = this.getAttribute('data-product-id');
+            const qty = parseInt(document.getElementById('productQty').value) || 1;
+
+            addToCartBtn.disabled = true;
+            addToCartBtn.textContent = 'Adding...';
 
             fetch('/add-to-cart/', {
                 method: 'POST',
@@ -537,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({
                     'product_id': productId,
-                    'quantity': 1  // default to 1, or dynamic if needed
+                    'quantity': qty
                 })
             })
             .then(response => response.json())
@@ -547,18 +565,19 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error:', error);
                 showToast('Error adding to cart', 'error');
+            })
+            .finally(() => {
+                addToCartBtn.disabled = false;
+                addToCartBtn.textContent = 'Add to Cart';
             });
         });
     }
 
+    // Toggle Favorite
     if (favoriteBtn) {
         favoriteBtn.addEventListener('click', function() {
             const productId = this.getAttribute('data-product-id');
-            
-            // Check if user is authenticated
 
-
-            // Disable button temporarily
             favoriteBtn.disabled = true;
             favoriteBtn.style.opacity = '0.7';
 
@@ -586,13 +605,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 showToast('Network error. Please try again!', 'error');
             })
             .finally(() => {
-                // Re-enable button
                 favoriteBtn.disabled = false;
                 favoriteBtn.style.opacity = '1';
             });
         });
     }
 
+    // Update favorite button UI
     function updateFavoriteButton(isFavorite) {
         if (isFavorite) {
             favoriteBtn.style.background = 'linear-gradient(45deg, #dc3545, #ff6b7d)';
@@ -609,13 +628,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Show toast alert
     function showToast(message, type) {
         toastMessage.textContent = message;
-        
-        // Set toast colors based on type
+
         const toastHeader = toast.querySelector('.toast-header');
         const toastBody = toast.querySelector('.toast-body');
-        
+
         if (type === 'success') {
             toastHeader.style.background = 'rgba(40, 167, 69, 0.1)';
             toastHeader.style.borderColor = 'rgba(40, 167, 69, 0.3)';
@@ -627,35 +646,34 @@ document.addEventListener('DOMContentLoaded', function() {
             toastBody.style.background = 'rgba(220, 53, 69, 0.1)';
             toastBody.style.color = '#dc3545';
         }
-        
+
         toast.style.display = 'block';
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(100%)';
-        
-        // Animate in
+
         setTimeout(() => {
             toast.style.transition = 'all 0.3s ease';
             toast.style.opacity = '1';
             toast.style.transform = 'translateX(0)';
         }, 10);
-        
-        // Auto hide after 3 seconds
+
         setTimeout(() => {
             hideToast();
         }, 3000);
     }
 
+    // Hide toast
     window.hideToast = function() {
         toast.style.transition = 'all 0.3s ease';
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(100%)';
-        
+
         setTimeout(() => {
             toast.style.display = 'none';
         }, 300);
     }
 
-    // Function to get CSRF token
+    // CSRF helper
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -671,10 +689,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return cookieValue;
     }
 });
-
-
-
-
 </script>
 
 {% include "utils/footer.htm" %}

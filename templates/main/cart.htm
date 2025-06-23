@@ -10,10 +10,10 @@ Cart | SL Micro Greens
 <div class="container my-5">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h1 class="display-4 text-gradient mb-3">Your Cart</h1>
-            <p class="lead cream-text">Review your fresh micro greens selection</p>
-            <div class="stats-box">
-                <div class="stats-number">{{ total_items }}</div>
+            <h1 class="display-4 text-gradient mb-3 float-effect">Your Cart</h1>
+            <p class="lead cream-text float-effect">Review your fresh micro greens selection</p>
+            <div class="cart-stats-box float-effect">
+                <div class="stats-number ">{{ total_items }}</div>
                 <div class="cream-text">Items in Cart</div>
             </div>
         </div>
@@ -31,98 +31,111 @@ Cart | SL Micro Greens
     <div class="row">
         <!-- Cart Items -->
         <div class="col-lg-8">
-            <h3 class="gold-text mb-4"><span class="emoji-large" style="font-size: 1.5rem;">🌱</span> Cart Items</h3>
+            <h3 class="gold-text mb-4 float-effect">
+                <span class="emoji-medium">🌱</span> Cart Items
+            </h3>
 
             {% for item in cart_items %}
-            <div class="feature-card mb-4 p-3">
-                <div class="row align-items-center text-center text-md-start">
-                    <div class="col-12 col-md-2">
-                        <div class="icon-box mx-auto" style="font-size: 2rem;">🥬</div>
+            <div class="cart-item-card float-effect">
+                <div class="cart-item-content ">
+                    <!-- Product Image/Icon -->
+                    <div class="cart-item-icon">
+                        <div class="product-icon float-effect">🥬</div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <h5 class="text-gradient mb-1">{{ item.product.name }}</h5>
-                        <p class="cream-text mb-0">Fresh & Organic</p>
+                    
+                    <!-- Product Details -->
+                    <div class="cart-item-details float-effect">
+                        <h5 class="text-gradient product-name">{{ item.product.name }}</h5>
+                        <p class="cream-text product-subtitle">Fresh & Organic</p>
                     </div>
-                    <div class="col-4 col-md-2 mt-3 mt-md-0">
-                        <div class="stats-box">
-                            <div class="stats-number">{{ item.quantity }}</div>
-                            <div class="cream-text small">Qty</div>
+                    
+                    <!-- Quantity Controls -->
+                    <div class="cart-item-quantity float-effect">
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="decreaseQty({{ item.id }})">-</button>
+                            <span class="qty-display">{{ item.quantity }}</span>
+                            <button class="qty-btn" onclick="increaseQty({{ item.id }})">+</button>
                         </div>
+                        <div class="cream-text small mt-1 ">Quantity</div>
                     </div>
-                    <div class="col-4 col-md-2 mt-3 mt-md-0">
-                        <p class="gold-text mb-1">₹{{ item.product.price }}</p>
-                        <p class="cream-text small">per item</p>
+                    
+                    <!-- Price -->
+                    <div class="cart-item-price float-effect">
+                        <div class="price-display">₹{{ item.product.new_price }}</div>
+                        <div class="cream-text small">per item</div>
                     </div>
-                    <div class="col-4 col-md-1 mt-3 mt-md-0">
-                        <div class="stats-box">
-                            <div class="stats-number">₹ 500</div>
-                            <div class="cream-text small">Subtotal</div>
-                        </div>
+                    
+                    <!-- Subtotal -->
+                    <div class="cart-item-subtotal float-effect">
+                        <div class="subtotal-display">₹{{ item.subtotal|default:"500" }}</div>
+                        <div class="cream-text small">Subtotal</div>
                     </div>
-                    <div class="col-12 col-md-1 mt-3 mt-md-0 text-center">
-                        <form method="post" action="">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm" style="background: rgba(220,53,69,0.2); color: #dc3545; border: 2px solid #dc3545; border-radius: 50%; width: 40px; height: 40px;"
-                                onmouseover="this.style.background='#dc3545'; this.style.color='white'; this.style.transform='scale(1.1)'"
-                                onmouseout="this.style.background='rgba(220,53,69,0.2)'; this.style.color='#dc3545'; this.style.transform='scale(1)'">
-                                🗑️
-                            </button>
-                        </form>
+                    
+                    <!-- Remove Button -->
+                    <div class="cart-item-remove float-effect">
+                        <button type="button" class="remove-btn" data-item-id="{{ item.id }}" title="Remove item">
+                            🗑️
+                        </button>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
 
-        <!-- Summary -->
-        <div class="col-lg-4">
-            <div class="feature-card p-4" style="position: sticky; top: 20px;">
-                <h4 class="text-gradient text-center mb-4">💰 Order Summary</h4>
+        <!-- Order Summary -->
+        <div class="col-lg-4 float-effect">
+            <div class="order-summary-card">
+                <h4 class="text-gradient text-center mb-4 float-effect">
+                    <span class="emoji-medium">💰</span> Order Summary
+                </h4>
 
-                <div class="d-flex justify-content-between mb-3">
+                <div class="summary-row float-effect">
                     <span class="cream-text">Items ({{ total_items }})</span>
                     <span class="gold-text">₹{{ cart_total }}</span>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
+                
+                <div class="summary-row float-effect">
                     <span class="cream-text">Delivery</span>
                     <span class="gold-text">Free</span>
                 </div>
-                <div class="section-divider my-3"></div>
-                <div class="d-flex justify-content-between mb-4">
-                    <span class="text-gradient h5">Total</span>
-                    <span class="text-gradient h5">₹{{ cart_total }}</span>
+                
+                <div class="summary-divider"></div>
+                
+                <div class="summary-row total-row float-effect">
+                    <span class="text-gradient">Total</span>
+                    <span class="text-gradient">₹{{ cart_total }}</span>
                 </div>
 
-                <button class="btn btn-lg w-100 mb-3" style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); color: #1b423a; border-radius: 15px;">
-                    Proceed to Checkout
+                <button class="checkout-btn float-effect">
+                    🛒 Proceed to Checkout
                 </button>
 
-                <a href="" class="btn btn-outline-light w-100" style="border-color: #c99a0a; color: #c99a0a; border-radius: 15px;">
-                    Continue Shopping
+                <a href="" class="continue-shopping-btn float-effect">
+                    ← Continue Shopping
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Perks -->
+    <!-- Benefits Section -->
     <div class="section-divider my-5"></div>
     <div class="row text-center">
         <div class="col-md-4">
-            <div class="feature-card">
+            <div class="feature-card float-effect">
                 <div class="icon-box">🚚</div>
                 <h5 class="gold-text">Free Delivery</h5>
                 <p class="cream-text">Free delivery on all orders above ₹500</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="feature-card">
+            <div class="feature-card float-effect">
                 <div class="icon-box">🌿</div>
                 <h5 class="gold-text">Fresh Guarantee</h5>
                 <p class="cream-text">100% fresh micro greens delivered to your door</p>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="feature-card">
+            <div class="feature-card float-effect">
                 <div class="icon-box">💚</div>
                 <h5 class="gold-text">Organic & Healthy</h5>
                 <p class="cream-text">Grown without chemicals, pure nutrition</p>
@@ -132,11 +145,11 @@ Cart | SL Micro Greens
 
     {% else %}
     <!-- Empty Cart -->
-    <div class="text-center my-5">
+    <div class="empty-cart-section float-effect">
         <span class="emoji-large float-effect">🛒</span>
         <h3 class="text-gradient mb-3">Your Cart is Empty</h3>
-        <p class="cream-text">Looks like you haven't added any fresh micro greens yet.</p>
-        <a href="{% url 'shop_home' %}" class="btn btn-lg" style="background: linear-gradient(45deg, #c99a0a, #e6e8d3); color: #1b423a; border-radius: 15px;">
+        <p class="cream-text mb-4">Looks like you haven't added any fresh micro greens yet.</p>
+        <a href="" class="start-shopping-btn">
             🌱 Start Shopping
         </a>
     </div>
@@ -144,6 +157,339 @@ Cart | SL Micro Greens
 </div>
 
 <div class="section-divider my-5"></div>
+
+<style>
+.cart-stats-box {
+    background: rgba(201, 154, 10, 0.15);
+    border: 2px solid #c99a0a;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1rem 0;
+    display: inline-block;
+}
+
+.emoji-medium {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.cart-item-card {
+    background: rgba(230, 232, 211, 0.08);
+    border: 1px solid rgba(201, 154, 10, 0.3);
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.cart-item-card:hover {
+    border-color: #c99a0a;
+    box-shadow: 0 5px 20px rgba(201, 154, 10, 0.1);
+    transform: translateY(-2px);
+}
+
+.cart-item-content {
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto auto 60px;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.cart-item-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #1b423a;
+}
+
+.cart-item-details {
+    text-align: left;
+}
+
+.product-name {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.product-subtitle {
+    font-size: 0.9rem;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.cart-item-quantity {
+    text-align: center;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(201, 154, 10, 0.1);
+    border-radius: 8px;
+    padding: 0.25rem;
+}
+
+.qty-btn {
+    background: #c99a0a;
+    color: #1b423a;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.qty-btn:hover {
+    background: #e6e8d3;
+    transform: scale(1.1);
+}
+
+.qty-display {
+    color: #c99a0a;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+.cart-item-price,
+.cart-item-subtotal {
+    text-align: center;
+}
+
+.price-display,
+.subtotal-display {
+    color: #c99a0a;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.cart-item-remove {
+    display: flex;
+    justify-content: center;
+}
+
+.remove-btn {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 2px solid rgba(220, 53, 69, 0.5);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.remove-btn:hover {
+    background: #dc3545;
+    color: white;
+    transform: scale(1.1);
+    border-color: #dc3545;
+}
+
+.order-summary-card {
+    background: rgba(230, 232, 211, 0.08);
+    border: 2px solid #c99a0a;
+    border-radius: 20px;
+    padding: 2rem;
+    position: sticky;
+    top: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.summary-divider {
+    height: 2px;
+    background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+    border-radius: 1px;
+    margin: 1.5rem 0;
+}
+
+.total-row {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.checkout-btn {
+    background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+    color: #1b423a;
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 154, 10, 0.3);
+}
+
+.continue-shopping-btn {
+    display: block;
+    text-align: center;
+    color: #c99a0a;
+    border: 2px solid #c99a0a;
+    border-radius: 15px;
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.continue-shopping-btn:hover {
+    background: rgba(201, 154, 10, 0.1);
+    color: #e6e8d3;
+    border-color: #e6e8d3;
+}
+
+.empty-cart-section {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(230, 232, 211, 0.05);
+    border-radius: 20px;
+    margin: 3rem 0;
+}
+
+.start-shopping-btn {
+    background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+    color: #1b423a;
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.start-shopping-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 154, 10, 0.3);
+    color: #1b423a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cart-item-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .cart-item-details {
+        text-align: center;
+    }
+    
+    .order-summary-card {
+        margin-top: 2rem;
+    }
+    
+    .quantity-controls {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .cart-item-card {
+        padding: 1rem;
+    }
+    
+    .order-summary-card {
+        padding: 1.5rem;
+    }
+    
+    .summary-row {
+        font-size: 1rem;
+    }
+    
+    .total-row {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const removeButtons = document.querySelectorAll('.remove-btn');
+
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const itemId = this.dataset.itemId;
+
+            fetch(`/remove-from-cart/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();  // or remove the item from DOM without reload
+                } else {
+                    alert('Error removing item');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Network error');
+            });
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
 
 {% include "utils/footer.htm" %}
 {% endblock content %}

@@ -2,6 +2,7 @@ import os
 import time
 from django.db import models
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 
 def get_timestamped_filename(filename, folder):
@@ -77,6 +78,12 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.user.user.username} - {self.product.name} x{self.quantity}"
+
+    @property
+    def subtotal(self):
+        if self.product and self.product.new_price:
+            return self.product.new_price * Decimal(self.quantity)
+        return Decimal('0.00')
 
 class Order(models.Model):
     STATUS_CHOICES = [

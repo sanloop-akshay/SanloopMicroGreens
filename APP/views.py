@@ -92,11 +92,15 @@ def favorite(request):
 def cart(request):
     user_profile = UserProfile.objects.get(user=request.user)
     cart_items = CartItem.objects.filter(user=user_profile).select_related('product')
+
     total_items = sum(item.quantity for item in cart_items)
+
+    cart_total = sum(item.quantity * item.product.new_price for item in cart_items)
 
     return render(request, "main/cart.htm", {
         'cart_items': cart_items,
-        'total_items': total_items
+        'total_items': total_items,
+        'cart_total': cart_total, 
     })
 
 def specificproduct(request, id):
@@ -218,25 +222,33 @@ def add_to_cart(request):
             product = Product.objects.get(id=product_id)
             user_profile = UserProfile.objects.get(user=request.user)
 
-            cart_item, created = CartItem.objects.get_or_create(
-                user=user_profile,
-                product=product,
-                defaults={'quantity': quantity}
-            )
+            cart_item, created = CartItem.objects.get_or_create(user=user_profile, product=product)
 
             if not created:
-                print("created")
-                cart_item.quantity += quantity
-                cart_item.save()
+                cart_item.quantity += quantity  # Increment if already exists
+            else:
+                cart_item.quantity = quantity  # Set initial quantity
 
-            return JsonResponse({'success': True, 'message': 'Product added to cart.'})
-        except Product.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Product not found.'})
+            cart_item.save()
+
+            return JsonResponse({'success': True, 'message': f"{product.name} added to cart."})
         except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
-    else:
-        return JsonResponse({'success': False, 'message': 'Invalid request method'})
+            return JsonResponse({'success': False, 'message': 'Failed to add to cart', 'error': str(e)})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
 
+
+@csrf_exempt
+@login_required
+def remove_from_cart(request, item_id):
+    if request.method == 'POST':
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            item = CartItem.objects.get(id=item_id, user=user_profile)
+            item.delete()
+            return JsonResponse({'success': True, 'message': 'Item removed'})
+        except CartItem.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Item not found'})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 """
 AUTHENTICATION & AUTHORIZATION
