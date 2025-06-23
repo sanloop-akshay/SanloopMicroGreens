@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'APP',
+    'social_django',
+
 
 ]
 
@@ -73,7 +75,17 @@ DATABASES = {
     }
 }
 
-LOGIN_URL = '/login/'
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  # Add Google backend
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+TEMPLATES[0]['OPTIONS']['context_processors'] += [
+    'social_django.context_processors.backends',
+    'social_django.context_processors.login_redirect',
+]
+
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
 
 

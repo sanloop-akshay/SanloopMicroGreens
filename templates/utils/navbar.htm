@@ -16,14 +16,16 @@
         <li class="nav-item">
           <a class="nav-link" href="/categories"><i class="fa fa-cubes"></i> Products</a>
         </li>
-
+        {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="/favorite"><i class="fa fa-heart"></i> Favorites</a>
         </li>
+        
 
         <li class="nav-item">
           <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"></i> Cart</a>
         </li>
+        {% endif %}
 
         <li class="nav-item">
           <a class="nav-link" href="/contactus"><i class="fa fa-headphones"></i> Contact Us</a>

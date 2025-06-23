@@ -1,18 +1,19 @@
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from APP import views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('',views.home,name="home"),
     path('categories',views.categories,name="categories"),
     path('categories/<int:productCategory>',views.productCategory,name="productCategories"),
     path('products/<int:id>',views.specificproduct,name="specificproduct"),
     path('contactus',views.contactus,name="contactus"),
-    path('login',views.user_login,name="login"),
+    path('login/',views.user_login,name="login"),
     path('sign-up',views.signup,name="signup"),
     path("forget-password",views.forgetpassword,name="forgetpassword"),
     path('otp',views.otp,name="otp"),
