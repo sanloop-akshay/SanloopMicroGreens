@@ -129,15 +129,16 @@ Login | SL Micro Greens
                     <!-- Social Login Buttons -->
                     <div class="row mb-5 g-3">
                         <div class="col-6">
-                            <button 
-                                type="button" 
-                                class="btn w-100 py-3"
-                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; border-radius: 12px; font-weight: 500; transition: all 0.3s ease;"
+                            <a 
+                                href="{% url 'social:begin' 'google-oauth2' %}" 
+                                class="btn w-100 py-3 text-decoration-none"
+                                style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; border-radius: 12px; font-weight: 500; transition: all 0.3s ease; display: inline-block; text-align: center;"
                                 onmouseover="this.style.background='rgba(201, 154, 10, 0.2)'; this.style.transform='translateY(-2px)'"
                                 onmouseout="this.style.background='rgba(230, 232, 211, 0.1)'; this.style.transform='translateY(0)'"
                             >
                                 <i class="fab fa-google me-2 fs-5"></i>Google
-                            </button>
+                            </a>
+
                         </div>
                         <div class="col-6">
                             <button 
