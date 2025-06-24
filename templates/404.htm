@@ -1,0 +1,266 @@
+{% extends 'base.htm' %}
+
+{% block title %}
+404 | SL Micro Greens
+{% endblock title %}
+
+{% block content %}
+{% include "utils/navbar.htm" %}
+
+<style>
+    .error-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(201, 154, 10, 0.1) 0%, rgba(230, 232, 211, 0.05) 100%);
+        position: relative;
+        margin: 2rem 0;
+        border-radius: 30px;
+    }
+    
+    .error-content {
+        text-align: center;
+        padding: 3rem;
+        background: rgba(230, 232, 211, 0.1);
+        border: 2px solid #c99a0a;
+        border-radius: 30px;
+        backdrop-filter: blur(10px);
+        max-width: 600px;
+        margin: 2rem;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .error-number {
+        font-size: 8rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 50px rgba(201, 154, 10, 0.3);
+    }
+    
+    .error-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+    
+    .error-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+    
+    .home-button {
+        background: linear-gradient(45deg, #c99a0a, #e6e8d3);
+        border: none;
+        color: #1b423a;
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(201, 154, 10, 0.3);
+    }
+    
+    .home-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(201, 154, 10, 0.4);
+        color: #1b423a;
+        text-decoration: none;
+    }
+    
+    .home-button:active {
+        transform: translateY(-2px);
+    }
+    
+    /* Background decorative elements */
+    .bg-decoration {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border: 2px solid rgba(201, 154, 10, 0.2);
+        border-radius: 50%;
+        z-index: 1;
+    }
+    
+    .decoration-1 {
+        top: 10%;
+        left: 10%;
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    .decoration-2 {
+        top: 20%;
+        right: 15%;
+        animation: float 3.5s ease-in-out infinite reverse;
+    }
+    
+    .decoration-3 {
+        bottom: 20%;
+        left: 20%;
+        animation: float 3s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+    
+    .decoration-4 {
+        bottom: 15%;
+        right: 10%;
+        animation: float 4.5s ease-in-out infinite reverse;
+        animation-delay: 0.5s;
+    }
+    
+    .icon-404 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        display: block;
+        opacity: 0.7;
+    }
+    
+    /* Animations */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes fadeInUp {
+        0% { 
+            opacity: 0; 
+            transform: translateY(30px); 
+        }
+        100% { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    .pulse-effect {
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+    }
+    
+    @media (max-width: 768px) {
+        .error-container {
+            min-height: 70vh;
+            margin: 1rem 0;
+        }
+        
+        .error-content {
+            padding: 2rem 1.5rem;
+            margin: 1rem;
+        }
+        
+        .error-number {
+            font-size: 5rem;
+        }
+        
+        .error-title {
+            font-size: 2rem;
+        }
+        
+        .error-subtitle {
+            font-size: 1rem;
+        }
+        
+        .home-button {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+        }
+        
+        .bg-decoration {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .icon-404 {
+            font-size: 3rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .error-number {
+            font-size: 4rem;
+        }
+        
+        .error-title {
+            font-size: 1.5rem;
+        }
+        
+        .bg-decoration {
+            display: none;
+        }
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="error-container">
+        <!-- Background decorative elements -->
+        <div class="bg-decoration decoration-1"></div>
+        <div class="bg-decoration decoration-2"></div>
+        <div class="bg-decoration decoration-3"></div>
+        <div class="bg-decoration decoration-4"></div>
+        
+        <div class="error-content fade-in-up">
+            <div class="icon-404 float-effect">🔍</div>
+            <div class="error-number text-gradient pulse-effect">404</div>
+            <h1 class="error-title gold-text">Page Not Found</h1>
+            <p class="error-subtitle cream-text">
+                Oops! The page you're looking for seems to have wandered off into our micro greens garden. 
+                Don't worry, let's get you back to fresh beginnings!
+            </p>
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="home-button">
+                    <span>🏠</span>
+                    Back to Home
+                </a>
+            </div>
+            <div class="mt-4">
+                <small class="cream-text" style="opacity: 0.7;">
+                    Error Code: 404 | Page Not Found
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add some interactive elements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click effect to the 404 number
+        const errorNumber = document.querySelector('.error-number');
+        if (errorNumber) {
+            errorNumber.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        }
+        
+        // Add mousemove effect for decorative elements
+        document.addEventListener('mousemove', function(e) {
+            const decorations = document.querySelectorAll('.bg-decoration');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            decorations.forEach((decoration, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+                decoration.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    });
+</script>
+
+{% include "utils/footer.htm" %}
+{% endblock content %}

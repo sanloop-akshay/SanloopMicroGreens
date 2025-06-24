@@ -437,3 +437,7 @@ def profile(request):
 
 def error(request):
     return render(request,"error/error.htm")
+
+def custom_404(request, exception):
+    print("called")
+    return render(request, '404.htm', status=404)
