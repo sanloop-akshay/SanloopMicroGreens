@@ -79,6 +79,7 @@ def contactus(request):
 
 @login_required
 def favorite(request):
+    
     try:
         user_profile = UserProfile.objects.get(user=request.user)
         favorites = Favorite.objects.filter(user=user_profile).select_related('product')
@@ -90,6 +91,7 @@ def favorite(request):
 
 @login_required
 def cart(request):
+    print(request.user)
     user_profile = UserProfile.objects.get(user=request.user)
     cart_items = CartItem.objects.filter(user=user_profile).select_related('product')
 
