@@ -21,7 +21,7 @@ Login | SL Micro Greens
 
             <!-- Login Form -->
             <div class="feature-card" style="padding: 3rem 2.5rem;">
-                <form method="post" class="needs-validation" novalidate>
+                <form method="post" class="needs-validation" novalidate autocomplete="off">
                     {% csrf_token %}
                     
                     {% if messages %}
@@ -45,6 +45,7 @@ Login | SL Micro Greens
                             placeholder="Enter your email or username"
                             style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;"
                             required
+                            autocomplete="off"
                         >
                         <div class="invalid-feedback">
                             Please provide your email or username.
@@ -65,6 +66,7 @@ Login | SL Micro Greens
                                 placeholder="Enter your password"
                                 style="background: rgba(230, 232, 211, 0.1); border: 2px solid #c99a0a; color: #e6e8d3; padding: 1rem 3.5rem 1rem 1.25rem; font-size: 1.1rem; border-radius: 12px;"
                                 required
+                                autocomplete="off"
                             >
                             <button 
                                 type="button" 
